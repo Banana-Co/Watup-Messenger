@@ -1,5 +1,8 @@
 HELP.md
 .gradle
+
+.idea
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
@@ -30,3 +33,13 @@ out/
 
 ### VS Code ###
 .vscode/
+.idea/gradle.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/watup-messenger.iml
+.idea/workspace.xml
+*.xml
