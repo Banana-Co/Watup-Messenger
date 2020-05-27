@@ -32,4 +32,35 @@ public interface FriendService {
      * @return 结果
      */
     BaseResult addTestFriend(String name1, String name2);
+
+    /**
+     * 根据用户id删除好友
+     * @param token 当前用户token
+     * @param id 好友id
+     * @return 结果
+     */
+    BaseResult deleteFriend(String token,String id);
+
+    /**
+     * 根据用户token获取好友列表
+     * @param token 当前用户token
+     * @return 好友列表
+     */
+    BaseResult getFriends(String token);
+
+    /**
+     * 根据用户id添加黑名单
+     * @param token 当前用户token
+     * @param id 好友id
+     * @return 结果
+     */
+    BaseResult addBlock(String token, String id);
+    /**
+     * 仅用来测试，根据用户名添加黑名单
+     *
+     * @param name1 当前用户名
+     * @param name2 好友用户名
+     * @return 结果
+     */
+    BaseResult addTestBlock(String name1, String name2);
 }
