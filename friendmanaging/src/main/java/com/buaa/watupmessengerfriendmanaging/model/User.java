@@ -19,7 +19,7 @@ public class User {
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
-
+    private List<FriendRequest> friendRequestList;
     public String getId() {
         return id;
     }
@@ -66,5 +66,13 @@ public class User {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public List<FriendRequest> getFriendRequestList() {
+        return friendRequestList;
+    }
+
+    public void setFriendRequestList(List<FriendRequest> friendRequestList) {
+        this.friendRequestList = friendRequestList;
     }
 }

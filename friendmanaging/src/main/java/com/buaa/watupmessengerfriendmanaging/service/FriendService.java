@@ -1,6 +1,6 @@
 package com.buaa.watupmessengerfriendmanaging.service;
 
-import com.buaa.watupmessengerfriendmanaging.result.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
 
 /**
  * @author Cast
@@ -22,8 +22,16 @@ public interface FriendService {
      * @param id    好友id
      * @return 结果
      */
-    BaseResult addFriend(String token, String id);
+    //BaseResult addFriend(String token, String id);
 
+    /**
+     * 根据用户id发送好友申请
+     * @param token 当前用户token
+     * @param id 好友id
+     * @param remark 备注
+     * @return 结果
+     */
+    BaseResult addFriendRequest(String token, String id, String remark);
     /**
      * 仅用来测试，根据用户名添加好友
      *
@@ -31,7 +39,7 @@ public interface FriendService {
      * @param name2 好友用户名
      * @return 结果
      */
-    BaseResult addTestFriend(String name1, String name2);
+    //BaseResult addTestFriend(String name1, String name2);
 
     /**
      * 根据用户id删除好友
@@ -63,4 +71,20 @@ public interface FriendService {
      * @return 结果
      */
     BaseResult addTestBlock(String name1, String name2);
+
+    /**
+     * 通过指定id的所有好友申请
+     * @param token 当前用户token
+     * @param id 好友id
+     * @return 结果
+     */
+    BaseResult passFriendRequest(String token,String id);
+
+    /**
+     * 拒绝指定id的所有好友申请
+     * @param token 当前用户token
+     * @param id 好友id
+     * @return 结果
+     */
+    BaseResult rejectFriendRequest(String token,String id);
 }

@@ -1,22 +1,19 @@
-package com.buaa.watupmessengerfriendmanaging.result;
+package com.buaa.watupmessengerfriendmanaging.factory;
+
+import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.model.FriendResult;
+import com.buaa.watupmessengerfriendmanaging.model.ResultCode;
 
 /**
  * @author Cast
  */
 public class FriendResultFactory implements ResultFactory {
-    private static volatile FriendResultFactory instance = null;
+    private static final FriendResultFactory instance = new FriendResultFactory();
 
     private FriendResultFactory() {
     }
 
     public static FriendResultFactory getInstance() {
-        if (instance == null) {
-            synchronized (FriendResultFactory.class) {
-                if (instance == null) {
-                    instance = new FriendResultFactory();
-                }
-            }
-        }
         return instance;
     }
 
@@ -48,5 +45,9 @@ public class FriendResultFactory implements ResultFactory {
     @Override
     public BaseResult produceError() {
         return new FriendResult(ResultCode.error);
+    }
+
+    public BaseResult produceNotFound(String message){
+        return new FriendResult(ResultCode.notFound,message);
     }
 }

@@ -4,7 +4,9 @@
 
 - 已部署到106.12.204.55:8000
 - 查找好友
-- 添加好友
+- 发送好友申请
+- 通过好友申请
+- 拒绝好友申请
 - 删除好友
 - 获取好友列表
 - 添加黑名单
@@ -59,19 +61,19 @@ GET
 - message: "其他错误"
 - data: null
 
-## 添加好友
+## 发送好友申请
 
 ### 接口描述
 
-根据用户id添加好友
+根据用户id发送好友申请
 
 ### 请求方法
 
-PUT
+POST
 
 ### URI
 
-/api/friend
+/api/friend/request
 
 ### 参数
 
@@ -94,10 +96,104 @@ PUT
 - message: "未找到好友"
 - data: null
 
-#### 好友已存在
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 通过好友申请
+
+### 接口描述
+
+通过指定id的所有好友申请
+
+### 请求方法
+
+PUT
+
+### URI
+
+/api/friend/request
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “通过成功”
+- data: null
+
+#### 未找到好友
+
+- code: 404
+- message: "未找到好友"
+- data: null
+
+#### 好友申请为空
+
+- code: 404
+- message: "好友申请为空"
+- data: null
+
+#### 已添加好友
 
 - code: 409
-- message: "好友已存在"
+- message: "已添加好友"
+- data: null
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 拒绝好友申请
+
+### 接口描述
+
+拒绝指定id的所有好友申请
+
+### 请求方法
+
+DELETE
+
+### URI
+
+/api/friend/request
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “拒绝成功”
+- data: null
+
+#### 未找到好友
+
+- code: 404
+- message: "未找到好友"
+- data: null
+
+#### 好友申请为空
+
+- code: 404
+- message: "好友申请为空"
 - data: null
 
 #### 其他错误

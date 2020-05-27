@@ -1,7 +1,7 @@
 package com.buaa.watupmessengerfriendmanaging.controller;
 
-import com.buaa.watupmessengerfriendmanaging.result.BaseResult;
-import com.buaa.watupmessengerfriendmanaging.result.FriendResultFactory;
+import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.factory.FriendResultFactory;
 import com.buaa.watupmessengerfriendmanaging.service.FriendService;
 import com.buaa.watupmessengerfriendmanaging.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,19 @@ public class FriendController {
         return friendService.getFriend(token, username);
     }
 
-    @RequestMapping(value = "friend", method = RequestMethod.PUT)
-    public BaseResult addFriend(@RequestParam String token, String id) {
-        return friendService.addFriend(token, id);
+
+
+    @RequestMapping(value = "friend/request", method = RequestMethod.PUT)
+    public BaseResult passFriendRequest(@RequestParam String token, String id) {
+        return friendService.passFriendRequest(token, id);
+    }
+    @RequestMapping(value = "friend/request", method = RequestMethod.POST)
+    public BaseResult addFriendRequest(@RequestParam String token, String id,String remark) {
+        return friendService.addFriendRequest(token, id, remark);
+    }
+    @RequestMapping(value = "friend/request", method = RequestMethod.DELETE)
+    public BaseResult rejectFriendRequest(@RequestParam String token, String id) {
+        return friendService.rejectFriendRequest(token, id);
     }
     @RequestMapping(value = "friend",method = RequestMethod.DELETE)
     public BaseResult deleteFriend(@RequestParam String token, String id){
@@ -45,11 +55,7 @@ public class FriendController {
     public BaseResult addTestBlock(@RequestParam String name1, String name2) {
         return friendService.addTestBlock(name1, name2);
     }
-    //仅用于测试
-    @RequestMapping(value = "testFriend", method = RequestMethod.PUT)
-    public BaseResult addTestFriend(@RequestParam String name1, String name2) {
-        return friendService.addTestFriend(name1, name2);
-    }
+
     //仅用于测试
     @RequestMapping(value = "user", method = RequestMethod.POST)
     public BaseResult addUser(@RequestParam String token, String username) {

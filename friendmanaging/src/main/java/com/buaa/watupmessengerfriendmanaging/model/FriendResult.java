@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.result;
+package com.buaa.watupmessengerfriendmanaging.model;
 
 /**
  * @author Cast
@@ -11,5 +11,8 @@ public class FriendResult extends BaseResult {
 
     public FriendResult(ResultCode resultCode) {
         super(resultCode);
+    }
+    public FriendResult(ResultCode resultCode,String message){
+        super(resultCode, message);
     }
 }

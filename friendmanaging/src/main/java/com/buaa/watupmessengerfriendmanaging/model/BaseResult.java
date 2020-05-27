@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.result;
+package com.buaa.watupmessengerfriendmanaging.model;
 
 /**
  * @author Cast
@@ -21,7 +21,10 @@ public abstract class BaseResult {
         this.code = resultCode.code;
         this.message = resultCode.message;
     }
-
+    public BaseResult(ResultCode resultCode,String message) {
+        this.code = resultCode.code;
+        this.message = message;
+    }
     public BaseResult(int code, String message) {
         this.code = code;
         this.message = message;

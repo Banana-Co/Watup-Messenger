@@ -1,4 +1,7 @@
-package com.buaa.watupmessengerfriendmanaging.result;
+package com.buaa.watupmessengerfriendmanaging.factory;
+
+import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.model.ResultCode;
 
 /**
  * @author Cast
