@@ -1,7 +1,7 @@
 package com.buaa.watupmessengerfriendmanaging.service;
 
 import com.buaa.watupmessengerfriendmanaging.model.User;
-import com.buaa.watupmessengerfriendmanaging.service.MongoRepository.UserRepository;
+import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

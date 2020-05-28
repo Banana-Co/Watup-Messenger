@@ -12,6 +12,10 @@ public enum ResultCode {
     /**
      * 未找到
      */
+    forbidden(403, "forbidden"),
+    /**
+     * 未找到
+     */
     notFound(404, "notFound"),
     /**
      * 冲突

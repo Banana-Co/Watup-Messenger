@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.service.MongoRepository;
+package com.buaa.watupmessengerfriendmanaging.service.mongo.repository;
 
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;

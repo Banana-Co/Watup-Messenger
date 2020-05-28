@@ -31,7 +31,12 @@ public interface ResultFactory {
      * @return result
      */
     BaseResult produceSuccess();
-
+    /**
+     * 不被许可
+     *
+     * @return result
+     */
+    BaseResult produceForbidden();
     /**
      * 未找到
      *

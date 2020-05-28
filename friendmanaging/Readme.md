@@ -9,12 +9,14 @@
 - 拒绝好友申请
 - 删除好友
 - 获取好友列表
-- 添加黑名单
+- 设置备注
+- 屏蔽好友
+- 撤销屏蔽好友
+- 获取黑名单
 
 ## 需要的其他模块接口
 
 - 根据token得到当前用户id
-- 根据id找到对应用户
 
 # 接口说明
 
@@ -90,6 +92,12 @@ POST
 - message: “添加成功”
 - data: null
 
+#### 被对方屏蔽
+
+- code: 403
+- message: "被对方屏蔽"
+- data: null
+
 #### 未找到好友
 
 - code: 404
@@ -135,6 +143,12 @@ PUT
 
 - code: 404
 - message: "未找到好友"
+- data: null
+
+#### 被对方屏蔽
+
+- code: 403
+- message: "被对方屏蔽"
 - data: null
 
 #### 好友申请为空
@@ -206,7 +220,7 @@ DELETE
 
 ### 接口描述
 
-根据好友用户id删除好友
+根据好友用户id删除好友,自己也将从对方的好友列表中移除
 
 ### 请求方法
 
@@ -291,142 +305,6 @@ GET
 - message: "其他错误"
 - data: null
 
-## 拉黑好友
-
-### 接口描述
-
-根据好友用户id拉黑好友
-
-### 请求方法
-
-PUT
-
-### URI
-
-/api/block
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-- message: “拉黑成功”
-- data: null
-
-#### 未找到好友
-
-- code: 404
-- message: "未找到好友"
-- data: null
-
-#### 好友已被拉黑
-
-- code: 409
-- message: "好友已被拉黑"
-- data: null
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 撤销拉黑好友
-
-### 接口描述
-
-根据好友用户id撤销拉黑
-
-### 请求方法
-
-DELETE
-
-### URI
-
-/api/block
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-- message: “撤销成功”
-- data: null
-
-#### 未找到好友
-
-- code: 404
-- message: "未找到好友"
-- data: null
-
-#### 好友已被拉黑
-
-- code: 409
-- message: "拉黑已被撤销"
-- data: null
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 获取黑名单
-
-### 接口描述
-
-根据用户token获取黑名单
-
-### 请求方法
-
-GET
-
-### URI
-
-/api/blocks
-
-### 参数
-
-| 字段  | 类型  | 描述     |
-| :---- | ----- | -------- |
-| token | Token | 用户标识 |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-
-- message: “获取成功”
-
-- data: friends(Array)
-
-  friends:
-
-  | 字段   | 类型 | 描述 |
-  | :----- | ---- | ---- |
-  | friend | User | 用户 |
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
 ## 设置好友备注
 
 ### 接口描述
@@ -439,7 +317,7 @@ PUT
 
 ### URI
 
-/api/friend
+/api/friend/nickname
 
 ### 参数
 
@@ -462,6 +340,142 @@ PUT
 - code: 404
 - message: "未找到好友"
 - data: null
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 屏蔽好友
+
+### 接口描述
+
+根据好友用户id屏蔽好友
+
+### 请求方法
+
+PUT
+
+### URI
+
+/api/friend/block
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “屏蔽成功”
+- data: null
+
+#### 未找到好友
+
+- code: 404
+- message: "未找到好友"
+- data: null
+
+#### 好友已被屏蔽
+
+- code: 409
+- message: "好友已被屏蔽"
+- data: null
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 撤销屏蔽好友
+
+### 接口描述
+
+根据好友用户id撤销屏蔽
+
+### 请求方法
+
+DELETE
+
+### URI
+
+/api/friend/block
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “屏蔽成功”
+- data: null
+
+#### 未找到好友
+
+- code: 404
+- message: "未找到好友"
+- data: null
+
+#### 屏蔽已被处理
+
+- code: 404
+- message: "屏蔽已被处理"
+- data: null
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 获取黑名单
+
+### 接口描述
+
+根据用户token获取黑名单
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/blocks
+
+### 参数
+
+| 字段  | 类型  | 描述     |
+| :---- | ----- | -------- |
+| token | Token | 用户标识 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “获取成功”
+
+- data: friends(Array)
+
+  friends:
+
+  | 字段   | 类型 | 描述 |
+  | :----- | ---- | ---- |
+  | friend | User | 用户 |
 
 #### 其他错误
 

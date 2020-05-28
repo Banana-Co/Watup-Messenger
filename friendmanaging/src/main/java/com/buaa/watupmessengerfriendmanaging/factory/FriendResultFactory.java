@@ -33,6 +33,11 @@ public class FriendResultFactory implements ResultFactory {
     }
 
     @Override
+    public BaseResult produceForbidden() {
+        return new FriendResult(ResultCode.forbidden);
+    }
+
+    @Override
     public BaseResult produceNotFound() {
         return new FriendResult(ResultCode.notFound);
     }
