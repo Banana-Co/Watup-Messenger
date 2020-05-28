@@ -1,46 +1,8 @@
 HELP.md
 .gradle
-
 .idea
-
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-.idea/gradle.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/jarRepositories.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/uiDesigner.xml
-.idea/vcs.xml
-.idea/watup-messenger.iml
-.idea/workspace.xml
-*.xml
-friendmanaging/.idea/workspace.xml
+build/*
+/friendmanaging/.gradle/*
+/friendmanaging/.idea/*
+/friendmanaging/build/*
+/friendmanaging/out/*
