@@ -132,6 +132,40 @@ public class FriendServiceImpl implements FriendService {
         return result;
     }
 
+    @Override
+    public BaseResult isFriend(String token, String id) {
+        Optional<User> userOptional = userService.getUserByToken(token);
+        Optional<User> friendOptional = userService.getUserById(id);
+        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
+            return FriendResultFactory.getInstance().produceNotFound();
+        }
+        User user = userOptional.get();
+        boolean data=true;
+        if(user.getFriends()==null||!user.getFriends().containsKey(id)){
+            data=false;
+        }
+        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
+        result.setData(data);
+        return result;
+    }
+
+    @Override
+    public BaseResult isBlock(String token, String id) {
+        Optional<User> userOptional = userService.getUserByToken(token);
+        Optional<User> friendOptional = userService.getUserById(id);
+        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
+            return FriendResultFactory.getInstance().produceNotFound();
+        }
+        User user = userOptional.get();
+        boolean data=true;
+        if(user.getBlocks()==null||!user.getBlocks().contains(id)){
+            data=false;
+        }
+        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
+        result.setData(data);
+        return result;
+    }
+
 
     @Override
     public BaseResult addFriendRequest(String token, String id, String remark) {

@@ -2,6 +2,7 @@ package com.buaa.watupmessengerfriendmanaging.controller;
 
 import com.buaa.watupmessengerfriendmanaging.factory.FriendResultFactory;
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.service.FriendFeignClient;
 import com.buaa.watupmessengerfriendmanaging.service.FriendService;
 import com.buaa.watupmessengerfriendmanaging.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,16 @@ public class FriendController {
     UserService userService;
     @Autowired
     FriendService friendService;
-
-    @RequestMapping(value = "friend", method = RequestMethod.GET)
+    @Autowired
+    FriendFeignClient friendFeignClient;
+    @RequestMapping(value = "message/feign", method = RequestMethod.GET)
+    public Object getMessages(
+            @RequestHeader(name = "Authorization", required = false) String token,
+            @RequestParam(name = "sort", defaultValue = "asc") String sort,
+            @RequestParam(name = "group", defaultValue = "true") Boolean group) {
+        return friendFeignClient.getMessages(token, sort, group);
+    }
+    @RequestMapping(value = "friend/search", method = RequestMethod.GET)
     public BaseResult getFriend(@RequestParam String token, String username) {
         return friendService.getFriend(token, username);
     }
@@ -67,6 +76,14 @@ public class FriendController {
     @RequestMapping(value = "friend/blocks", method = RequestMethod.GET)
     public BaseResult getBlocks(@RequestParam String token) {
         return friendService.getBlocks(token);
+    }
+    @RequestMapping(value = "friend", method = RequestMethod.GET)
+    public BaseResult isFriend(@RequestParam String token, String id) {
+        return friendService.isFriend(token, id);
+    }
+    @RequestMapping(value = "friend/block", method = RequestMethod.GET)
+    public BaseResult isBlock(@RequestParam String token, String id) {
+        return friendService.isBlock(token, id);
     }
     //仅用于测试
     @RequestMapping(value = "user", method = RequestMethod.POST)

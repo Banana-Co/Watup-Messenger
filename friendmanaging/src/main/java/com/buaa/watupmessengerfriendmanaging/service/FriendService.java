@@ -96,4 +96,20 @@ public interface FriendService {
      * @return 结果
      */
     BaseResult getBlocks(String token);
+    /**
+     * 根据id判断是否是用户的好友
+     *
+     * @param token 当前用户token
+     * @param id    好友id
+     * @return 结果
+     */
+    BaseResult isFriend(String token, String id);
+    /**
+     * 根据id判断是否已被用户屏蔽
+     *
+     * @param token 当前用户token
+     * @param id    好友id
+     * @return 结果
+     */
+    BaseResult isBlock(String token, String id);
 }
