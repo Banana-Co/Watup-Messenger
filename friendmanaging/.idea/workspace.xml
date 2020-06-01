@@ -2,11 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93176cda-28b6-4549-9f23-58bc411b2026" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/FriendResultFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/FriendResultFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/ResultFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/ResultFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +111,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
-  <component name="RunManager" selected="Spring Boot.WatupMessengerFriendManagingApplication">
+  <component name="RunManager" selected="Gradle.friendmanaging [bootJar]">
     <configuration name="friendmanaging [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -189,7 +199,7 @@
       <workItem from="1590652113167" duration="1377000" />
       <workItem from="1590662136876" duration="4157000" />
       <workItem from="1590922117527" duration="11879000" />
-      <workItem from="1590996162652" duration="2675000" />
+      <workItem from="1590996162652" duration="3391000" />
     </task>
     <servers />
   </component>
@@ -234,38 +244,38 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="102" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590927959658" />
-    <state width="1493" height="264" key="GridCell.Tab.0.bottom" timestamp="1590936629058">
+    <state width="1493" height="72" key="GridCell.Tab.0.bottom" timestamp="1590999735419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.0.center" timestamp="1590936629058">
+    <state width="1493" height="72" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590999735419" />
+    <state width="1493" height="72" key="GridCell.Tab.0.center" timestamp="1590999735419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.0.left" timestamp="1590936629058">
+    <state width="1493" height="72" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590999735419" />
+    <state width="1493" height="72" key="GridCell.Tab.0.left" timestamp="1590999735419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.0.right" timestamp="1590936629058">
+    <state width="1493" height="72" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590999735419" />
+    <state width="1493" height="72" key="GridCell.Tab.0.right" timestamp="1590999735419">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.1.bottom" timestamp="1590936629058">
+    <state width="1493" height="72" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590999735419" />
+    <state width="1493" height="63" key="GridCell.Tab.1.bottom" timestamp="1590999304225">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.1.center" timestamp="1590936629058">
+    <state width="1493" height="63" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590999304225" />
+    <state width="1493" height="63" key="GridCell.Tab.1.center" timestamp="1590999304225">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.1.left" timestamp="1590936629058">
+    <state width="1493" height="63" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1590999304225" />
+    <state width="1493" height="63" key="GridCell.Tab.1.left" timestamp="1590999304225">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
-    <state width="1493" height="264" key="GridCell.Tab.1.right" timestamp="1590936629058">
+    <state width="1493" height="63" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1590999304225" />
+    <state width="1493" height="63" key="GridCell.Tab.1.right" timestamp="1590999304225">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1590936629058" />
+    <state width="1493" height="63" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1590999304225" />
     <state x="249" y="0" key="SettingsEditor" timestamp="1590928775987">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

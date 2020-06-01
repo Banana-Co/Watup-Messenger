@@ -29,9 +29,13 @@ public class FriendServiceImpl implements FriendService {
         if (user.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
         }
-        List<User> data = user
+        Map<String,String> friends=user
                 .get()
-                .getFriends()
+                .getFriends();
+        if (friends==null){
+            return FriendResultFactory.getInstance().produceSuccess(new ArrayList<>());
+        }
+        List<User> data = friends
                 .keySet()
                 .stream()
                 .map(u -> userService
@@ -63,9 +67,13 @@ public class FriendServiceImpl implements FriendService {
         if (user.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
         }
-        List<User> data = user
+        Map<String,String> friends=user
                 .get()
-                .getFriends()
+                .getFriends();
+        if (friends==null){
+            return FriendResultFactory.getInstance().produceSuccess(new ArrayList<>());
+        }
+        List<User> data = friends
                 .keySet()
                 .stream()
                 .map(u -> userService
@@ -116,9 +124,13 @@ public class FriendServiceImpl implements FriendService {
         if (userOptional.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
         }
-        List<User> data = userOptional
+        List<String> blocks=userOptional
                 .get()
-                .getBlocks()
+                .getBlocks();
+        if (blocks==null){
+            return FriendResultFactory.getInstance().produceSuccess(new ArrayList<>());
+        }
+        List<User> data = blocks
                 .stream()
                 .map(u -> userService
                         .getUserById(u)
