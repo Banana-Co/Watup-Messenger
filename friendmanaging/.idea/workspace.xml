@@ -2,35 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93176cda-28b6-4549-9f23-58bc411b2026" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendFeignClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/FriendResultFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/FriendResultFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/ResultFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/factory/ResultFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +189,7 @@
       <workItem from="1590652113167" duration="1377000" />
       <workItem from="1590662136876" duration="4157000" />
       <workItem from="1590922117527" duration="11879000" />
+      <workItem from="1590996162652" duration="2675000" />
     </task>
     <servers />
   </component>

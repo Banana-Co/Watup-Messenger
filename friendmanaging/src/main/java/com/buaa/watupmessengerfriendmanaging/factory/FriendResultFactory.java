@@ -3,6 +3,8 @@ package com.buaa.watupmessengerfriendmanaging.factory;
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
 import com.buaa.watupmessengerfriendmanaging.model.FriendResult;
 import com.buaa.watupmessengerfriendmanaging.model.ResultCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /**
  * @author Cast
@@ -28,31 +30,34 @@ public class FriendResultFactory implements ResultFactory {
     }
 
     @Override
-    public BaseResult produceSuccess() {
-        return new FriendResult(ResultCode.success);
+    public ResponseEntity<Object> produceSuccess() {
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+    public ResponseEntity<Object> produceSuccess(Object object) {
+        return new ResponseEntity<>(object,HttpStatus.ACCEPTED);
+    }
+
+
+    @Override
+    public ResponseEntity<Object> produceNotFound() {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
-    public BaseResult produceForbidden() {
-        return new FriendResult(ResultCode.forbidden);
+    public ResponseEntity<Object> produceForbidden() {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+    @Override
+    public ResponseEntity<Object> produceConflict() {
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @Override
-    public BaseResult produceNotFound() {
-        return new FriendResult(ResultCode.notFound);
+    public ResponseEntity<Object> produceError() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    public BaseResult produceConflict() {
-        return new FriendResult(ResultCode.conflict);
-    }
-
-    @Override
-    public BaseResult produceError() {
-        return new FriendResult(ResultCode.error);
-    }
-
-    public BaseResult produceNotFound(String message){
-        return new FriendResult(ResultCode.notFound,message);
+    public ResponseEntity<Object> produceNotFound(String message){
+        return new ResponseEntity<>(message,HttpStatus.NOT_FOUND);
     }
 }

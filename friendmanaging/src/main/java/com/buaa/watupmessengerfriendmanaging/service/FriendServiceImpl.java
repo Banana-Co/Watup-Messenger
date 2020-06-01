@@ -7,6 +7,7 @@ import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,7 +24,7 @@ public class FriendServiceImpl implements FriendService {
     private UserRepository userRepository;
 
     @Override
-    public BaseResult getFriend(String token, String username) {
+    public ResponseEntity<Object> getFriend(String token, String username) {
         Optional<User> user = userService.getUserByToken(token);
         if (user.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
@@ -38,13 +39,11 @@ public class FriendServiceImpl implements FriendService {
                         .orElse(new User()))
                 .filter(u -> u.getUsername().contains(username))
                 .collect(Collectors.toList());
-        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
-        result.setData(data);
-        return result;
+        return FriendResultFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public BaseResult deleteFriend(String token, String id) {
+    public ResponseEntity<Object> deleteFriend(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -59,7 +58,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult getFriends(String token) {
+    public ResponseEntity<Object> getFriends(String token) {
         Optional<User> user = userService.getUserByToken(token);
         if (user.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
@@ -73,13 +72,11 @@ public class FriendServiceImpl implements FriendService {
                         .getUserById(u)
                         .orElse(new User()))
                 .collect(Collectors.toList());
-        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
-        result.setData(data);
-        return result;
+        return FriendResultFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public BaseResult blockFriend(String token, String id) {
+    public ResponseEntity<Object> blockFriend(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friend = userService.getUserById(id);
         if (userOptional.isEmpty() || friend.isEmpty()) {
@@ -98,7 +95,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult unblockFriend(String token, String id) {
+    public ResponseEntity<Object> unblockFriend(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friend = userService.getUserById(id);
         if (userOptional.isEmpty() || friend.isEmpty()) {
@@ -114,7 +111,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult getBlocks(String token) {
+    public ResponseEntity<Object> getBlocks(String token) {
         Optional<User> userOptional = userService.getUserByToken(token);
         if (userOptional.isEmpty()) {
             return FriendResultFactory.getInstance().produceNotFound();
@@ -127,13 +124,11 @@ public class FriendServiceImpl implements FriendService {
                         .getUserById(u)
                         .orElse(new User()))
                 .collect(Collectors.toList());
-        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
-        result.setData(data);
-        return result;
+        return FriendResultFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public BaseResult isFriend(String token, String id) {
+    public ResponseEntity<Object> isFriend(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -144,13 +139,11 @@ public class FriendServiceImpl implements FriendService {
         if(user.getFriends()==null||!user.getFriends().containsKey(id)){
             data=false;
         }
-        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
-        result.setData(data);
-        return result;
+        return FriendResultFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public BaseResult isBlock(String token, String id) {
+    public ResponseEntity<Object> isBlock(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -161,14 +154,12 @@ public class FriendServiceImpl implements FriendService {
         if(user.getBlocks()==null||!user.getBlocks().contains(id)){
             data=false;
         }
-        BaseResult result = FriendResultFactory.getInstance().produceSuccess();
-        result.setData(data);
-        return result;
+        return FriendResultFactory.getInstance().produceSuccess(data);
     }
 
 
     @Override
-    public BaseResult addFriendRequest(String token, String id, String remark) {
+    public ResponseEntity<Object> addFriendRequest(String token, String id, String remark) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -188,7 +179,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult passFriendRequest(String token, String id) {
+    public ResponseEntity<Object> passFriendRequest(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -214,7 +205,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult rejectFriendRequest(String token, String id) {
+    public ResponseEntity<Object> rejectFriendRequest(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
@@ -231,7 +222,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public BaseResult modifyFriendNickname(String token, String id, String nickname) {
+    public ResponseEntity<Object> modifyFriendNickname(String token, String id, String nickname) {
         Optional<User> userOptional = userService.getUserByToken(token);
         Optional<User> friendOptional = userService.getUserById(id);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {

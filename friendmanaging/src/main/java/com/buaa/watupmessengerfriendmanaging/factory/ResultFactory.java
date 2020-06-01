@@ -2,6 +2,7 @@ package com.buaa.watupmessengerfriendmanaging.factory;
 
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
 import com.buaa.watupmessengerfriendmanaging.model.ResultCode;
+import org.springframework.http.ResponseEntity;
 
 /**
  * @author Cast
@@ -30,31 +31,31 @@ public interface ResultFactory {
      *
      * @return result
      */
-    BaseResult produceSuccess();
+    ResponseEntity<Object> produceSuccess();
     /**
      * 不被许可
      *
      * @return result
      */
-    BaseResult produceForbidden();
+    ResponseEntity<Object> produceForbidden();
     /**
      * 未找到
      *
      * @return result
      */
-    BaseResult produceNotFound();
+    ResponseEntity<Object> produceNotFound();
 
     /**
      * 冲突
      *
      * @return result
      */
-    BaseResult produceConflict();
+    ResponseEntity<Object> produceConflict();
 
     /**
      * 其他错误
      *
      * @return result
      */
-    BaseResult produceError();
+    ResponseEntity<Object> produceError();
 }
