@@ -13,8 +13,11 @@
 - 屏蔽好友（不会删除好友）
 - 撤销屏蔽好友
 - 获取黑名单
-- 查询用户是否是好友
-- 查询用户是否被屏蔽
+- 根据token查询用户是否是好友
+- 根据token查询用户是否被屏蔽
+- 根据id查询用户是否是好友
+- 根据id查询用户是否被屏蔽
+- 获取好友id列表
 
 ## 需要的其他模块接口
 
@@ -553,6 +556,273 @@ GET
 - message: “success”
 
 - data: true/false
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 查询用户是否是好友
+
+### 接口描述
+
+根据id判断是否是用户的好友
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 查询用户是否被屏蔽
+
+### 接口描述
+
+根据id判断用户是否被屏蔽
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/block
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 根据token查询用户是否是好友
+
+### 接口描述
+
+根据token判断是否是用户的好友
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 根据token查询用户是否被屏蔽
+
+### 接口描述
+
+根据token判断用户是否被屏蔽
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/block
+
+### 参数
+
+| 字段  | 类型   | 描述     |
+| :---- | ------ | -------- |
+| token | Token  | 用户标识 |
+| id    | String | 好友的ID |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 根据id查询用户是否是好友
+
+### 接口描述
+
+根据id判断是否是用户的好友
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend
+
+### 参数
+
+| 字段     | 类型   | 描述     |
+| :------- | ------ | -------- |
+| id       | String | 用户的id |
+| friendId | String | 好友的id |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 根据id查询用户是否被屏蔽
+
+### 接口描述
+
+根据id判断用户是否被屏蔽
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/block
+
+### 参数
+
+| 字段     | 类型   | 描述     |
+| :------- | ------ | -------- |
+| id       | String | 用户的id |
+| friendId | String | 好友的id |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “success”
+
+- data: true/false
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 获取好友id列表
+
+### 接口描述
+
+根据用户token获取好友id列表
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friends
+
+### 参数
+
+| 字段  | 类型  | 描述     |
+| :---- | ----- | -------- |
+| token | Token | 用户标识 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “获取成功”
+
+- data: friends(Array)
+
+  friends:
+
+  | 字段 | 类型   | 描述   |
+  | :--- | ------ | ------ |
+  | id   | String | 用户id |
 
 #### 其他错误
 

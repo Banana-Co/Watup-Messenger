@@ -2,12 +2,15 @@ package com.buaa.watupmessengerfriendmanaging.controller;
 
 import com.buaa.watupmessengerfriendmanaging.factory.FriendResultFactory;
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.model.OtherException;
 import com.buaa.watupmessengerfriendmanaging.service.FriendFeignClient;
 import com.buaa.watupmessengerfriendmanaging.service.FriendService;
 import com.buaa.watupmessengerfriendmanaging.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Cast
@@ -58,6 +61,10 @@ public class FriendController {
     @RequestMapping(value = "friends", method = RequestMethod.GET)
     public ResponseEntity<Object> getFriends(@RequestParam String token) {
         return friendService.getFriends(token);
+    }
+    @RequestMapping(value = "friends/id", method = RequestMethod.GET)
+    public List<String> getFriendsSimple(@RequestParam String token) throws OtherException {
+        return friendService.getFriendsSimple(token);
     }
 
     @RequestMapping(value = "friend/nickname", method = RequestMethod.PUT)

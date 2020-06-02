@@ -1,7 +1,10 @@
 package com.buaa.watupmessengerfriendmanaging.service;
 
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
+import com.buaa.watupmessengerfriendmanaging.model.OtherException;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * @author Cast
@@ -113,4 +116,27 @@ public interface FriendService {
      * @return 结果
      */
     ResponseEntity<Object> isBlock(String token, String id);
+
+    /**
+     * 根据用户token获取好友id列表
+     * @param token 当前用户token
+     * @return 好友id列表
+     */
+    List<String> getFriendsSimple(String token) throws OtherException;
+
+    /**
+     * 根据id判断是否是用户的好友
+     * @param id 当前用户id
+     * @param friendId 好友id
+     * @return 结果
+     */
+    Boolean isFriendById(String id,String friendId) throws OtherException;
+
+    /**
+     * 根据id判断是否已被用户屏蔽
+     * @param id 当前用户id
+     * @param friendId 好友id
+     * @return 结果
+     */
+    Boolean isBlockById(String id,String friendId) throws OtherException;
 }

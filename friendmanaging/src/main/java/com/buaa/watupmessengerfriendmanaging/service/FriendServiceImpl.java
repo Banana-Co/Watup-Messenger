@@ -4,6 +4,7 @@ import com.buaa.watupmessengerfriendmanaging.factory.FriendRequestFactory;
 import com.buaa.watupmessengerfriendmanaging.factory.FriendResultFactory;
 import com.buaa.watupmessengerfriendmanaging.model.BaseResult;
 import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
+import com.buaa.watupmessengerfriendmanaging.model.OtherException;
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +168,51 @@ public class FriendServiceImpl implements FriendService {
             data=false;
         }
         return FriendResultFactory.getInstance().produceSuccess(data);
+    }
+
+    @Override
+    public List<String> getFriendsSimple(String token) throws OtherException{
+        Optional<User> user = userService.getUserByToken(token);
+        if (user.isEmpty()) {
+            throw new OtherException();
+        }
+        Map<String,String> friends=user
+                .get()
+                .getFriends();
+        if (friends==null){
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(friends.keySet());
+    }
+
+    @Override
+    public Boolean isFriendById(String id, String friendId) throws OtherException {
+        Optional<User> userOptional = userService.getUserById(id);
+        Optional<User> friendOptional = userService.getUserById(friendId);
+        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
+            throw new OtherException();
+        }
+        User user = userOptional.get();
+        boolean data=true;
+        if(user.getFriends()==null||!user.getFriends().containsKey(friendId)){
+            data=false;
+        }
+        return data;
+    }
+
+    @Override
+    public Boolean isBlockById(String id, String friendId) throws OtherException {
+        Optional<User> userOptional = userService.getUserById(id);
+        Optional<User> friendOptional = userService.getUserById(friendId);
+        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
+            throw new OtherException();
+        }
+        User user = userOptional.get();
+        boolean data=true;
+        if(user.getBlocks()==null||!user.getBlocks().contains(friendId)){
+            data=false;
+        }
+        return data;
     }
 
 
