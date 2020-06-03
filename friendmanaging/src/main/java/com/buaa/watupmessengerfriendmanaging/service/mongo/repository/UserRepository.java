@@ -10,7 +10,6 @@ import java.util.Optional;
  * 仅用来测试
  */
 public interface UserRepository extends MongoRepository<User, String> {
-    Optional<User> getByToken(String token);
 
     Optional<User> getById(String id);
 

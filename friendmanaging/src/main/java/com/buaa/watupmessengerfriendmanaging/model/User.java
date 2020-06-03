@@ -20,6 +20,7 @@ public class User {
     private Map<String, String> friends;
     private List<String> blocks;
     private List<FriendRequest> friendRequestList;
+    private List<String> groups;
     public String getId() {
         return id;
     }
@@ -74,5 +75,13 @@ public class User {
 
     public void setFriendRequestList(List<FriendRequest> friendRequestList) {
         this.friendRequestList = friendRequestList;
+    }
+
+    public List<String> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<String> groups) {
+        this.groups = groups;
     }
 }

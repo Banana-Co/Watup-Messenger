@@ -25,8 +25,6 @@ public class FriendServiceImpl implements FriendService {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public ResponseEntity<Object> getFriend(String token, String username) {

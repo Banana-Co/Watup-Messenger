@@ -2,6 +2,7 @@ package com.buaa.watupmessengerfriendmanaging.util;
 
 import com.buaa.watupmessengerfriendmanaging.model.exception.ConflictException;
 import com.buaa.watupmessengerfriendmanaging.model.exception.ForbiddenException;
+import com.buaa.watupmessengerfriendmanaging.model.exception.GroupNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
 import org.springframework.core.Ordered;
@@ -27,6 +28,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(ForbiddenException.class)
     protected ResponseEntity<?> handleForbiddenException(ForbiddenException ex) {
+        return ResponseEntityFactory.getInstance().produceConflict(ex.getMessage());
+    }
+    @ExceptionHandler(GroupNotFoundException.class)
+    protected ResponseEntity<?> handleGroupNotFoundException(GroupNotFoundException ex) {
         return ResponseEntityFactory.getInstance().produceConflict(ex.getMessage());
     }
 }
