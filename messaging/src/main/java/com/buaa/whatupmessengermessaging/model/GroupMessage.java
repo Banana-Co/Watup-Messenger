@@ -1,16 +1,13 @@
 package com.buaa.whatupmessengermessaging.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.time.LocalDateTime;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Message {
+public class GroupMessage {
     private String type;
     private String senderId;
-    private String receiverId;
+    private String groupId;
     private String content;
-    private LocalDateTime timestamp = null;
+    private LocalDateTime timestamp;
 
     public String getType() {
         return type;
@@ -27,12 +24,12 @@ public class Message {
         this.senderId = senderId;
     }
 
-    public String getReceiverId() {
-        return receiverId;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getContent() {
@@ -56,6 +53,7 @@ public class Message {
         return "Message{" +
                 "type='" + type + '\'' +
                 ", id='" + senderId + '\'' +
+                ", groupId='" + groupId + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp=" + timestamp +
                 '}';

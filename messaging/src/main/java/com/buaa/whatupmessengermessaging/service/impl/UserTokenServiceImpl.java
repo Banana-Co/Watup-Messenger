@@ -14,6 +14,6 @@ public class UserTokenServiceImpl implements UserTokenService {
 
     @Override
     public String getId(String token) {
-        return stringRedisTemplate.opsForValue().get(token);
+        return stringRedisTemplate.opsForValue().get(String.format("token:%s", token));
     }
 }

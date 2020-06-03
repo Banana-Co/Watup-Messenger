@@ -1,30 +1,43 @@
 package com.buaa.whatupmessengermessaging.websocket;
 
+import com.buaa.whatupmessengermessaging.model.Group;
+import com.buaa.whatupmessengermessaging.model.GroupMessage;
 import com.buaa.whatupmessengermessaging.model.Message;
+import com.buaa.whatupmessengermessaging.service.FriendService;
+import com.buaa.whatupmessengermessaging.service.GroupService;
+import com.buaa.whatupmessengermessaging.service.MessagingService;
 import com.buaa.whatupmessengermessaging.service.UserTokenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @ChannelHandler.Sharable
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     @Autowired
     UserTokenService userTokenService;
+    @Autowired
+    MessagingService messagingService;
+    @Autowired
+    FriendService friendService;
+    @Autowired
+    GroupService groupService;
 
     public static ObjectMapper mapper = new ObjectMapper();
     static {
@@ -36,19 +49,69 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-        Message message = mapper.readValue(msg.text(), Message.class);
+    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+        try {
+            ObjectNode node = mapper.readValue(msg.text(), ObjectNode.class);
 
-        System.out.println(message.toString());
+            JsonNode type = node.findValue("type");
+            if (type.asText().equalsIgnoreCase("unicast")) {
+                Message message = mapper.readValue(msg.text(), Message.class);
+                handleUnicast(message, ctx);
+            } else if (type.asText().equalsIgnoreCase("multicast")) {
+                GroupMessage groupMessage = mapper.readValue(msg.text(), GroupMessage.class);
+                handleMulticast(groupMessage, ctx);
+            }
 
-        ChannelHandlerContext outCtx = MessagingSession.getChannelHandlerContext(message.getId());
-        message.setId(MessagingSession.getId(ctx));
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void handleUnicast(Message message, ChannelHandlerContext ctx) throws JsonProcessingException {
         message.setTimestamp(LocalDateTime.now());
 
-        System.out.println(message.toString());
+        String receiverId = message.getReceiverId();
+        String senderId = MessagingSession.getId(ctx);
 
-        TextWebSocketFrame outMsg = new TextWebSocketFrame(mapper.writeValueAsString(message));
-        outCtx.writeAndFlush(outMsg);
+        if (receiverId == null || !friendService.isFriendById(senderId, receiverId) || friendService.isBlockById(receiverId, senderId))
+            return;
+
+        Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
+        message.setSenderId(senderId);
+
+        if (outCtx.isPresent()) {
+            TextWebSocketFrame outMsg = new TextWebSocketFrame(mapper.writeValueAsString(message));
+            outCtx.get().writeAndFlush(outMsg);
+            ctx.writeAndFlush(outMsg);
+        } else {
+            messagingService.saveMessage(receiverId, message);
+        }
+    }
+
+    private void handleMulticast(GroupMessage message, ChannelHandlerContext ctx) throws JsonProcessingException {
+        message.setTimestamp(LocalDateTime.now());
+
+        String groupId = message.getGroupId();
+
+        if (groupId == null)
+            return;
+
+        Group group = groupService.getGroupById(groupId);
+        String senderId = MessagingSession.getId(ctx);
+        if (group == null || !group.getUsersId().contains(senderId))
+            return;
+
+        message.setSenderId(senderId);
+        List<String> usersId = group.getUsersId();
+        for (String userId : usersId) {
+            Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(userId);
+
+            if (outCtx.isPresent()) {
+                TextWebSocketFrame outMsg = new TextWebSocketFrame(mapper.writeValueAsString(message));
+                outCtx.get().writeAndFlush(outMsg);
+            } else {
+                messagingService.saveGroupMessage(userId, message);
+            }
+        }
     }
 
     @Override
@@ -63,15 +126,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
            if (params.containsKey("token")) {
                String token = params.get("token").get(0);
-               System.out.println(token);
-               System.out.println(String.format("token:%s", token));
-               String id = userTokenService.getId(String.format("token:%s", token));
-               System.out.println(id);
+               String id = userTokenService.getId(token);
 
                if (id != null) {
                    ctx.pipeline().remove(HTTPRequestHandler.class);
 
-                   MessagingSession.addSession(id, ctx);
+                   MessagingSession.addSession(token, id, ctx);
                } else {
                    ctx.channel().close();
                }
