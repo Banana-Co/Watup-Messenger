@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.factory;
+package com.buaa.watupmessengerfriendmanaging.model.factory;
 
 import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
 

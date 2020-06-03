@@ -19,11 +19,9 @@
 - 根据id查询用户是否被屏蔽
 - 获取好友id列表
 
-## 需要的其他模块接口
-
-- 根据token得到当前用户id
-
 # 接口说明
+
+ token由header中的Authorization字段传递 
 
 ## 查找好友
 

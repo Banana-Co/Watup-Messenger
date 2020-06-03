@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.model;
+package com.buaa.watupmessengerfriendmanaging.model.result;
 
 /**
  * @author Cast

@@ -3,6 +3,7 @@ package com.buaa.watupmessengerfriendmanaging.service;
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RedisTemplate<String,String> redisTemplate;
     @Override
     public Optional<User> getUserByToken(String token) {
-        return userRepository.getByToken(token);
+        return getUserById(redisTemplate.opsForValue().get(token));
     }
 
     @Override
