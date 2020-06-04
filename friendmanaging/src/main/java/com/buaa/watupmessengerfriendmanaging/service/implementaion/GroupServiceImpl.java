@@ -1,10 +1,12 @@
-package com.buaa.watupmessengerfriendmanaging.service;
+package com.buaa.watupmessengerfriendmanaging.service.implementaion;
 
 import com.buaa.watupmessengerfriendmanaging.model.Group;
 import com.buaa.watupmessengerfriendmanaging.model.User;
-import com.buaa.watupmessengerfriendmanaging.model.exception.GroupNotFoundException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.UserNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.exception.GroupNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
+import com.buaa.watupmessengerfriendmanaging.service.face.GroupService;
+import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.GroupRepository;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +23,7 @@ import java.util.Optional;
  * @author Cast
  */
 @Service
-public class GroupServiceImpl implements GroupService{
+public class GroupServiceImpl implements GroupService {
     @Autowired
     private UserService userService;
     @Autowired
@@ -40,14 +43,15 @@ public class GroupServiceImpl implements GroupService{
         userRepository.save(user);
     }
     @Override
-    public ResponseEntity<Object> creatGroup(String token,List<String> users) {
+    public ResponseEntity<Object> creatGroup(String token,String[] users) {
         Optional<User> user = userService.getUserByToken(token);
         if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
-        users.add(user.get().getId());
+        List<String> users2=new ArrayList<>(Arrays.asList(users));
+        users2.add(user.get().getId());
         Group group=new Group();
-        group.setMembers(new ArrayList<>(users));
+        group.setMembers(new ArrayList<>(users2));
         group.setCreatedDate(LocalDateTime.now());
         for (String id:users){
             joinGroup(id,group.getId());

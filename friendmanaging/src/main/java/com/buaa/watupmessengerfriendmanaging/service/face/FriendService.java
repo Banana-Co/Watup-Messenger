@@ -1,6 +1,5 @@
-package com.buaa.watupmessengerfriendmanaging.service;
+package com.buaa.watupmessengerfriendmanaging.service.face;
 
-import com.buaa.watupmessengerfriendmanaging.model.exception.OtherException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -38,7 +37,7 @@ public interface FriendService {
     ResponseEntity<Object> addFriendRequest(String token, String id, String remark);
 
     /**
-     * 通过指定id的所有好友申请
+     * 通过指定id的好友申请
      *
      * @param token 当前用户token
      * @param id    好友id
@@ -47,13 +46,13 @@ public interface FriendService {
     ResponseEntity<Object> passFriendRequest(String token, String id);
 
     /**
-     * 拒绝指定id的所有好友申请
+     * 拒绝指定id的好友申请
      *
      * @param token 当前用户token
      * @param id    好友id
      * @return 结果
      */
-    ResponseEntity<Object> rejectFriendRequest(String token, String id);
+    ResponseEntity<Object> rejectFriendRequest(String id);
 
     /**
      * 根据用户id删除好友,自己也将从对方的好友列表中移除
@@ -138,4 +137,12 @@ public interface FriendService {
      * @return 结果
      */
     Boolean isBlockById(String id,String friendId);
+
+    /**
+     * 根据用户token获取好友申请列表
+     *
+     * @param token 当前用户token
+     * @return 结果
+     */
+    ResponseEntity<Object> getFriendRequest(String token);
 }

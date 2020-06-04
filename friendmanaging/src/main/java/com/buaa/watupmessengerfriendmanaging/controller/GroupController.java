@@ -1,14 +1,11 @@
 package com.buaa.watupmessengerfriendmanaging.controller;
 
-import com.buaa.watupmessengerfriendmanaging.service.FriendFeignClient;
-import com.buaa.watupmessengerfriendmanaging.service.FriendService;
-import com.buaa.watupmessengerfriendmanaging.service.GroupService;
-import com.buaa.watupmessengerfriendmanaging.service.UserService;
+import com.buaa.watupmessengerfriendmanaging.service.face.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.face.GroupService;
+import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author Cast
@@ -28,7 +25,7 @@ public class GroupController {
         return groupService.getGroups(token);
     }
     @RequestMapping(value = "group", method = RequestMethod.POST)
-    public ResponseEntity<Object> createGroup(@RequestHeader(name = "Authorization") String token, @RequestParam List<String> users) {
+    public ResponseEntity<Object> createGroup(@RequestHeader(name = "Authorization") String token, @RequestParam(name = "users",defaultValue = "",required = false) String[] users) {
         return groupService.creatGroup(token, users);
     }
     @RequestMapping(value = "group/member", method = RequestMethod.POST)
@@ -38,7 +35,7 @@ public class GroupController {
         return groupService.inviteToGroup(userId, groupId);
     }
     @RequestMapping(value = "group/member", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> inviteToGroup(@RequestHeader(name = "Authorization") String token
+    public ResponseEntity<Object> leaveGroup(@RequestHeader(name = "Authorization") String token
             , @RequestParam String groupId) {
         return groupService.leaveGroup(token, groupId);
     }

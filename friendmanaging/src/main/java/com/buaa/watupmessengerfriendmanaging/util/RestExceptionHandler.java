@@ -1,9 +1,9 @@
 package com.buaa.watupmessengerfriendmanaging.util;
 
-import com.buaa.watupmessengerfriendmanaging.model.exception.ConflictException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.ForbiddenException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.GroupNotFoundException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.UserNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.exception.ConflictException;
+import com.buaa.watupmessengerfriendmanaging.exception.ForbiddenException;
+import com.buaa.watupmessengerfriendmanaging.exception.GroupNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

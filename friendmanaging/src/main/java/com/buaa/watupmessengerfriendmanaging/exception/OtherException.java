@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.model.exception;
+package com.buaa.watupmessengerfriendmanaging.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

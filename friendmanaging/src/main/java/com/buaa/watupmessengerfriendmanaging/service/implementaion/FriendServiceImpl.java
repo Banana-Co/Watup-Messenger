@@ -1,15 +1,18 @@
-package com.buaa.watupmessengerfriendmanaging.service;
+package com.buaa.watupmessengerfriendmanaging.service.implementaion;
 
 import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
 import com.buaa.watupmessengerfriendmanaging.model.User;
-import com.buaa.watupmessengerfriendmanaging.model.exception.ConflictException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.ForbiddenException;
-import com.buaa.watupmessengerfriendmanaging.model.exception.UserNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.exception.ConflictException;
+import com.buaa.watupmessengerfriendmanaging.exception.ForbiddenException;
+import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.factory.FriendRequestFactory;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
+import com.buaa.watupmessengerfriendmanaging.service.face.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
+import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.FriendRequestRepository;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
+import org.bouncycastle.math.ec.rfc7748.X25519;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +28,8 @@ public class FriendServiceImpl implements FriendService {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private FriendRequestRepository friendRequestRepository;
     @Override
     public ResponseEntity<Object> getFriend(String token, String username) {
         Optional<User> user = userService.getUserByToken(token);
@@ -217,6 +221,17 @@ public class FriendServiceImpl implements FriendService {
         return data;
     }
 
+    @Override
+    public ResponseEntity<Object> getFriendRequest(String token) {
+        Optional<User> userOptional = userService.getUserByToken(token);
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        User user = userOptional.get();
+        List<FriendRequest> friendRequests=friendRequestRepository.getByReceiverId(user.getId());
+        return ResponseEntityFactory.getInstance().produceSuccess(friendRequests);
+    }
+
 
     @Override
     public ResponseEntity<Object> addFriendRequest(String token, String id, String remark) {
@@ -230,54 +245,41 @@ public class FriendServiceImpl implements FriendService {
         if (friend.getBlocks() != null && friend.getBlocks().contains(user.getId())) {
             throw new ForbiddenException();
         }
-        if (friend.getFriendRequestList() == null) {
-            friend.setFriendRequestList(new ArrayList<>());
-        }
-        friend.getFriendRequestList().add(FriendRequestFactory.produce(user.getId(), remark));
-        userRepository.save(friend);
+        FriendRequest friendRequest=FriendRequestFactory.produce(user.getId(),id,remark);
+        friendRequestRepository.save(friendRequest);
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 
     @Override
     public ResponseEntity<Object> passFriendRequest(String token, String id) {
         Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
-        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
-        User friend = friendOptional.get();
-        List<FriendRequest> friendRequests = user.getFriendRequestList();
-        if (friendRequests == null) {
+        Optional<FriendRequest> friendRequest=friendRequestRepository.getById(id);
+        if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
-        if (friend.getBlocks() != null && friend.getBlocks().contains(user.getId())) {
-            throw new ForbiddenException();
+        Optional<User> friendOptional = userService.getUserById(friendRequest.get().getSenderId());
+        if (friendOptional.isEmpty()) {
+            throw new UserNotFoundException();
         }
-        if (addFriend(user, id, friend.getUsername()) || addFriend(friend, user.getId(), user.getUsername())) {
+        User friend=friendOptional.get();
+        if (addFriend(user, id) || addFriend(friend, user.getId())) {
             throw new ConflictException("请求已被处理");
         }
-        addFriend(user, id, friend.getUsername());
-        addFriend(friend, user.getId(), user.getUsername());
-        friendRequests.removeIf(friendRequest -> friendRequest.getSenderId().equals(id));
-        userRepository.save(user);
+        friendRequestRepository.delete(friendRequest.get());
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 
     @Override
-    public ResponseEntity<Object> rejectFriendRequest(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
-        if (userOptional.isEmpty() || friendOptional.isEmpty()) {
-            throw new UserNotFoundException();
-        }
-        User user = userOptional.get();
-        List<FriendRequest> friendRequests = user.getFriendRequestList();
-        if (friendRequests == null) {
+    public ResponseEntity<Object> rejectFriendRequest(String id) {
+        Optional<FriendRequest> friendRequest=friendRequestRepository.getById(id);
+        if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
-        friendRequests.removeIf(friendRequest -> friendRequest.getSenderId().equals(id));
-        userRepository.save(user);
+        friendRequestRepository.delete(friendRequest.get());
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 

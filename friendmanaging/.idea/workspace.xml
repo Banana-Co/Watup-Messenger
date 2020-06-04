@@ -2,17 +2,49 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93176cda-28b6-4549-9f23-58bc411b2026" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/GroupController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/Group.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/GroupNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/GroupService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/GroupServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/mongo/repository/GroupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/config/ResourceServerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/mongo/repository/FriendRequestRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.3/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.3/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/controller/FriendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/model/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/buaa/watupmessengerfriendmanaging/service/UserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/watup-messenger-friend-managing-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/WatupMessengerFriendManagingApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FeignController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FeignController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/FriendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/GroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/controller/GroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/FriendRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/FriendRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/mongo/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/mongo/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/ConflictException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/exception/ConflictException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/ForbiddenException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/exception/ForbiddenException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/GroupNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/exception/GroupNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/OtherException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/exception/OtherException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/exception/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/factory/FriendRequestFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/model/factory/FriendRequestFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/face/FriendService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/FriendServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/implementaion/FriendServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/GroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/face/GroupService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/implementaion/GroupServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/face/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/service/implementaion/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/util/RestExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/util/RestExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +119,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -95,7 +131,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ScienceShare" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/buaa/watupmessengerfriendmanaging/config" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -106,7 +142,12 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
-  <component name="RunManager" selected="Spring Boot.WatupMessengerFriendManagingApplication">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Study\gitgit\watup-messenger\friendmanaging\src\main\java\com\buaa\watupmessengerfriendmanaging\config" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.friendmanaging [bootJar]">
     <configuration name="friendmanaging [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -199,7 +240,10 @@
       <workItem from="1591093803559" duration="536000" />
       <workItem from="1591094386062" duration="7873000" />
       <workItem from="1591155321832" duration="6833000" />
-      <workItem from="1591170260767" duration="5633000" />
+      <workItem from="1591170260767" duration="11362000" />
+      <workItem from="1591195876460" duration="13000" />
+      <workItem from="1591196078648" duration="1627000" />
+      <workItem from="1591239634031" duration="7456000" />
     </task>
     <servers />
   </component>
@@ -228,14 +272,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1590563853460" />
-    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1591178449232">
+    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser" timestamp="1591241587404">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1591178449232" />
-    <state x="269" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1591105175254">
+    <state x="574" y="96" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1591241587404" />
+    <state x="269" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1591249954911">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="269" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1591105175254" />
+    <state x="269" y="335" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1591249954911" />
     <state x="330" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1590934889118">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -244,42 +288,42 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1590670298480" />
-    <state x="549" y="102" key="FileChooserDialogImpl" timestamp="1590927959658">
+    <state x="549" y="102" key="FileChooserDialogImpl" timestamp="1591195887511">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="102" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590927959658" />
-    <state width="1493" height="235" key="GridCell.Tab.0.bottom" timestamp="1591170237771">
+    <state x="549" y="102" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1591195887511" />
+    <state width="1493" height="306" key="GridCell.Tab.0.bottom" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591170237771" />
-    <state width="1493" height="235" key="GridCell.Tab.0.center" timestamp="1591170237771">
+    <state width="1493" height="306" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.0.center" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1591170237771" />
-    <state width="1493" height="235" key="GridCell.Tab.0.left" timestamp="1591170237771">
+    <state width="1493" height="306" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.0.left" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1591170237771" />
-    <state width="1493" height="235" key="GridCell.Tab.0.right" timestamp="1591170237771">
+    <state width="1493" height="306" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.0.right" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1591170237771" />
-    <state width="1493" height="235" key="GridCell.Tab.1.bottom" timestamp="1591169937472">
+    <state width="1493" height="306" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.1.bottom" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591169937472" />
-    <state width="1493" height="235" key="GridCell.Tab.1.center" timestamp="1591169937472">
+    <state width="1493" height="306" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.1.center" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1591169937472" />
-    <state width="1493" height="235" key="GridCell.Tab.1.left" timestamp="1591169937472">
+    <state width="1493" height="306" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.1.left" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1591169937472" />
-    <state width="1493" height="235" key="GridCell.Tab.1.right" timestamp="1591169937472">
+    <state width="1493" height="306" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
+    <state width="1493" height="306" key="GridCell.Tab.1.right" timestamp="1591250233185">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="235" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1591169937472" />
+    <state width="1493" height="306" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1591250233185" />
     <state width="1493" height="235" key="GridCell.Tab.2.bottom" timestamp="1591069202883">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -300,6 +344,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1590928775987" />
+    <state x="485" y="304" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1591196626466">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="485" y="304" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1536.824@0.0.1536.824" timestamp="1591196626466" />
     <state x="178" y="0" key="new project wizard" timestamp="1590929606183">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

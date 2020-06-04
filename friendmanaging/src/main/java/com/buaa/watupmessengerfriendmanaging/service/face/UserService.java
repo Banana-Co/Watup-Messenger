@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.service;
+package com.buaa.watupmessengerfriendmanaging.service.face;
 
 import com.buaa.watupmessengerfriendmanaging.model.User;
 

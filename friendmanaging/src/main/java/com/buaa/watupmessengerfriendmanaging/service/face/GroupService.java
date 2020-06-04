@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.service;
+package com.buaa.watupmessengerfriendmanaging.service.face;
 
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +12,7 @@ public interface GroupService {
      * @param users
      * @return
      */
-    ResponseEntity<Object> creatGroup(String token,List<String> users);
+    ResponseEntity<Object> creatGroup(String token,String[] users);
 
     ResponseEntity<Object> inviteToGroup(String userId,String groupId);
 
