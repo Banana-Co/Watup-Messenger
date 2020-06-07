@@ -10,16 +10,16 @@ import java.util.Map;
 /**
  * @author Cast
  */
-@Document
+@Document(value = "user")
 public class User {
     @Id
     private String id;
-    private String username;
-    private String token;
+    private String nickname;
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
     private List<String> groups;
+    private String avatarUrl ="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
     public String getId() {
         return id;
     }
@@ -28,12 +28,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public List<String> getBlocks() {
@@ -52,14 +52,6 @@ public class User {
         this.friends = friends;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -74,5 +66,13 @@ public class User {
 
     public void setGroups(List<String> groups) {
         this.groups = groups;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

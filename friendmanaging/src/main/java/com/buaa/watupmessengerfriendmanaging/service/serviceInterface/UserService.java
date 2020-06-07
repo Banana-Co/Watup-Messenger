@@ -1,4 +1,4 @@
-package com.buaa.watupmessengerfriendmanaging.service.face;
+package com.buaa.watupmessengerfriendmanaging.service.serviceInterface;
 
 import com.buaa.watupmessengerfriendmanaging.model.User;
 
@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> getUserById(String id);
 
-    Optional<User> getUserByUserName(String username);
+    Optional<User> getUserByNickname(String username);
 
-    void addUser(String token, String username);
+    void addUser(String id, String username);
 }

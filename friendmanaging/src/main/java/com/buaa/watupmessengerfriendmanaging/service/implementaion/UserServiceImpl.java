@@ -1,7 +1,7 @@
 package com.buaa.watupmessengerfriendmanaging.service.implementaion;
 
 import com.buaa.watupmessengerfriendmanaging.model.User;
-import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,15 +31,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByUserName(String username) {
-        return userRepository.getByUsername(username);
+    public Optional<User> getUserByNickname(String username) {
+        return userRepository.getByNickname(username);
     }
 
     @Override
-    public void addUser(String token,String username) {
+    public void addUser(String id,String username) {
         User user=new User();
-        user.setToken(token);
-        user.setUsername(username);
+        user.setId(id);
+        user.setNickname(username);
         user.setCreatedDate(LocalDateTime.now());
         userRepository.save(user);
     }

@@ -1,8 +1,8 @@
 package com.buaa.watupmessengerfriendmanaging.controller;
 
 import com.buaa.watupmessengerfriendmanaging.service.FriendFeignClient;
-import com.buaa.watupmessengerfriendmanaging.service.face.FriendService;
-import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

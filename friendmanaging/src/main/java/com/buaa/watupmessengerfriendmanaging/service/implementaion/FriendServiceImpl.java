@@ -7,11 +7,10 @@ import com.buaa.watupmessengerfriendmanaging.exception.ForbiddenException;
 import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.factory.FriendRequestFactory;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
-import com.buaa.watupmessengerfriendmanaging.service.face.FriendService;
-import com.buaa.watupmessengerfriendmanaging.service.face.UserService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.FriendRequestRepository;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
-import org.bouncycastle.math.ec.rfc7748.X25519;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,8 +30,8 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     private FriendRequestRepository friendRequestRepository;
     @Override
-    public ResponseEntity<Object> getFriend(String token, String username) {
-        Optional<User> user = userService.getUserByToken(token);
+    public ResponseEntity<Object> getFriend(String id, String username) {
+        Optional<User> user = userService.getUserById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -48,15 +47,15 @@ public class FriendServiceImpl implements FriendService {
                 .map(u -> userService
                         .getUserById(u)
                         .orElse(new User()))
-                .filter(u -> u.getUsername().contains(username))
+                .filter(u -> u.getNickname().contains(username))
                 .collect(Collectors.toList());
         return ResponseEntityFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public ResponseEntity<Object> deleteFriend(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
+    public ResponseEntity<Object> deleteFriend(String userId, String friendId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friendOptional = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -69,8 +68,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ResponseEntity<Object> getFriends(String token) {
-        Optional<User> user = userService.getUserByToken(token);
+    public ResponseEntity<Object> getFriends(String id) {
+        Optional<User> user = userService.getUserById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -91,9 +90,9 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ResponseEntity<Object> blockFriend(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friend = userService.getUserById(id);
+    public ResponseEntity<Object> blockFriend(String userId, String friendId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friend = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friend.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -101,33 +100,33 @@ public class FriendServiceImpl implements FriendService {
         if (user.getBlocks() == null) {
             user.setBlocks(new ArrayList<>());
         }
-        if (user.getBlocks().contains(id)) {
+        if (user.getBlocks().contains(friendId)) {
             throw new ConflictException("用户已被屏蔽");
         }
-        user.getBlocks().add(id);
+        user.getBlocks().add(friendId);
         userRepository.save(user);
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 
     @Override
-    public ResponseEntity<Object> unblockFriend(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friend = userService.getUserById(id);
+    public ResponseEntity<Object> unblockFriend(String userId, String friendId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friend = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friend.isEmpty()) {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
-        if (user.getBlocks() == null || !user.getBlocks().contains(id)) {
+        if (user.getBlocks() == null || !user.getBlocks().contains(friendId)) {
             throw new ConflictException("屏蔽已被处理");
         }
-        user.getBlocks().remove(id);
+        user.getBlocks().remove(friendId);
         userRepository.save(user);
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 
     @Override
-    public ResponseEntity<Object> getBlocks(String token) {
-        Optional<User> userOptional = userService.getUserByToken(token);
+    public ResponseEntity<Object> getBlocks(String id) {
+        Optional<User> userOptional = userService.getUserById(id);
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -147,38 +146,38 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ResponseEntity<Object> isFriend(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
+    public ResponseEntity<Object> isFriend(String userId, String friendId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friendOptional = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
         boolean data = true;
-        if (user.getFriends() == null || !user.getFriends().containsKey(id)) {
+        if (user.getFriends() == null || !user.getFriends().containsKey(friendId)) {
             data = false;
         }
         return ResponseEntityFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public ResponseEntity<Object> isBlock(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
+    public ResponseEntity<Object> isBlock(String userId, String friendId) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friendOptional = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
         boolean data = true;
-        if (user.getBlocks() == null || !user.getBlocks().contains(id)) {
+        if (user.getBlocks() == null || !user.getBlocks().contains(friendId)) {
             data = false;
         }
         return ResponseEntityFactory.getInstance().produceSuccess(data);
     }
 
     @Override
-    public List<String> getFriendsSimple(String token) {
-        Optional<User> user = userService.getUserByToken(token);
+    public List<String> getFriendsSimple(String id) {
+        Optional<User> user = userService.getUserById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -222,37 +221,36 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ResponseEntity<Object> getFriendRequest(String token) {
-        Optional<User> userOptional = userService.getUserByToken(token);
+    public ResponseEntity<Object> getFriendRequest(String id) {
+        Optional<User> userOptional = userService.getUserById(id);
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
-        User user = userOptional.get();
-        List<FriendRequest> friendRequests=friendRequestRepository.getByReceiverId(user.getId());
+        List<FriendRequest> friendRequests=friendRequestRepository.getByReceiverId(id);
         return ResponseEntityFactory.getInstance().produceSuccess(friendRequests);
     }
 
 
     @Override
-    public ResponseEntity<Object> addFriendRequest(String token, String id, String remark) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
+    public ResponseEntity<Object> addFriendRequest(String userId, String friendId, String remark) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friendOptional = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
         User friend = friendOptional.get();
-        if (friend.getBlocks() != null && friend.getBlocks().contains(user.getId())) {
+        if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
-        FriendRequest friendRequest=FriendRequestFactory.produce(user.getId(),id,remark);
+        FriendRequest friendRequest=FriendRequestFactory.produce(userId,friendId,remark);
         friendRequestRepository.save(friendRequest);
         return ResponseEntityFactory.getInstance().produceSuccess();
     }
 
     @Override
-    public ResponseEntity<Object> passFriendRequest(String token, String id) {
-        Optional<User> userOptional = userService.getUserByToken(token);
+    public ResponseEntity<Object> passFriendRequest(String userId, String id) {
+        Optional<User> userOptional = userService.getUserById(userId);
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -266,7 +264,7 @@ public class FriendServiceImpl implements FriendService {
             throw new UserNotFoundException();
         }
         User friend=friendOptional.get();
-        if (addFriend(user, id) || addFriend(friend, user.getId())) {
+        if (addFriend(user, friend.getId()) || addFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
         friendRequestRepository.delete(friendRequest.get());
@@ -284,9 +282,9 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ResponseEntity<Object> modifyFriendNickname(String token, String id, String nickname) {
-        Optional<User> userOptional = userService.getUserByToken(token);
-        Optional<User> friendOptional = userService.getUserById(id);
+    public ResponseEntity<Object> modifyFriendNickname(String userId, String friendId, String nickname) {
+        Optional<User> userOptional = userService.getUserById(userId);
+        Optional<User> friendOptional = userService.getUserById(friendId);
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -294,7 +292,7 @@ public class FriendServiceImpl implements FriendService {
         if (user.getFriends() == null) {
             throw new UserNotFoundException();
         }
-        user.getFriends().put(id, nickname);
+        user.getFriends().put(friendId, nickname);
         userRepository.save(user);
         return ResponseEntityFactory.getInstance().produceSuccess();
     }

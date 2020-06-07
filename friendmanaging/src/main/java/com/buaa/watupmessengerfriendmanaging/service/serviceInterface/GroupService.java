@@ -1,8 +1,6 @@
-package com.buaa.watupmessengerfriendmanaging.service.face;
+package com.buaa.watupmessengerfriendmanaging.service.serviceInterface;
 
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 /**
  * @author Cast
