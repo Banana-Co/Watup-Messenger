@@ -148,16 +148,17 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     @Override
-    public void sendNotification(String token, String receiverId, Object msg) {
-        sendOneNotification(token, receiverId, msg);
+    public void sendNotification(String receiverId, Object msg) {
+        sendOneNotification(receiverId, msg);
     }
 
     @Override
-    public void sendGroupNotification(String token, String groupId, Object msg) {
-        Optional<Group> group = groupService.getGroup(token, groupId);
+    public void sendGroupNotification(String groupId, Object msg) {
+        Optional<Group> group = groupService.getGroup(groupId);
+
         if (group.isPresent()) {
-            for (String userId : group.get().getUsersId()) {
-                sendOneNotification(token, userId, msg);
+            for (String receiverId : group.get().getUsersId()) {
+                sendOneNotification(receiverId, msg);
             }
         } else {
             throw new ForbiddenException("No such group, or you don't have access to the group.");
@@ -165,14 +166,14 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     @Override
-    public void sendAllNotification(String token, Object msg) {
-        List<String> friends = friendService.getFriendsSimple(token);
-        for (String userId : friends) {
-            sendOneNotification(token, userId, msg);
+    public void sendAllNotification(String userId, Object msg) {
+        List<String> friends = friendService.getFriendsSimple(userId);
+        for (String receiverId : friends) {
+            sendOneNotification(receiverId, msg);
         }
     }
 
-    private void sendOneNotification(String token, String receiverId, Object msg) {
+    private void sendOneNotification(String receiverId, Object msg) {
         Optional<ChannelHandlerContext> ctx = MessagingSession.getChannelHandlerContext(receiverId);
         ctx.ifPresent(channelHandlerContext -> channelHandlerContext.writeAndFlush(msg));
     }

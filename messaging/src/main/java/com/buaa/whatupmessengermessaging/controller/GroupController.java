@@ -17,27 +17,27 @@ public class GroupController {
     GroupService groupService;
 
     @RequestMapping(value = "/group", method = RequestMethod.POST)
-    String addGroup(@RequestHeader(value = "Authorization") String access_token, @RequestParam String name) {
-        return groupService.addGroup(access_token, name);
+    String addGroup(@RequestParam String id, @RequestParam String name) {
+        return groupService.addGroup(id, name);
     }
 
     @RequestMapping(value = "/group/{groupId}", method = RequestMethod.PUT)
-    void modifyGroup(@RequestHeader(value = "Authorization") String access_token, @PathVariable String groupId, @RequestParam String name) {
-        groupService.changeName(access_token, groupId, name);
+    void modifyGroup(@RequestParam String id, @PathVariable String groupId, @RequestParam String name) {
+        groupService.changeName(id, groupId, name);
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
-    Object getAllGroups(@RequestHeader(value = "Authorization") String access_token, @RequestParam(defaultValue = "true") Boolean detailed) {
+    Object getAllGroups(@RequestParam String id, @RequestParam(defaultValue = "true") Boolean detailed) {
         if (!detailed) {
-            return groupService.getAllGroups(access_token);
+            return groupService.getAllGroups(id);
         } else {
-            return groupService.getAllGroupsDetailed(access_token);
+            return groupService.getAllGroupsDetailed(id);
         }
     }
 
     @RequestMapping(value = "/group/{groupId}", method = RequestMethod.GET)
-    Group getGroup(@RequestHeader(value = "Authorization") String access_token, @PathVariable String groupId) {
-        Optional<Group> group = groupService.getGroup(access_token, groupId);
+    Group getGroup(@RequestParam String id, @PathVariable String groupId) {
+        Optional<Group> group = groupService.getGroup(id, groupId);
         if (group.isPresent()) {
             return group.get();
         } else {
@@ -46,35 +46,35 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
-    void addMember(@RequestHeader(value = "Authorization") String access_token, @RequestBody GroupRequest request) {
-        groupService.addMember(access_token, request);
+    void addMember(@RequestParam String id, @RequestBody GroupRequest request) {
+        groupService.addMember(id, request);
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.GET)
-    List<GroupRequest> getRequests(@RequestHeader(value = "Authorization") String access_token) {
-        return groupService.getRequests(access_token);
+    List<GroupRequest> getRequests(@RequestParam String id) {
+        return groupService.getRequests(id);
     }
 
     @RequestMapping(value = "/request/{requestId}", method = RequestMethod.DELETE)
-    void removeRequest(@RequestHeader(value = "Authorization") String access_token, @PathVariable String requestId) {
-        groupService.removeRequest(access_token, requestId);
+    void removeRequest(@RequestParam String id, @PathVariable String requestId) {
+        groupService.removeRequest(id, requestId);
     }
 
     @RequestMapping(value = "/request/{requestId}", method = RequestMethod.PUT)
-    void acceptRequest(@RequestHeader(value = "Authorization") String access_token, @PathVariable String requestId) {
-        groupService.acceptRequest(access_token, requestId);
+    void acceptRequest(@RequestParam String id, @PathVariable String requestId) {
+        groupService.acceptRequest(id, requestId);
     }
 
     @RequestMapping(value = "/group/{groupId}", method = RequestMethod.DELETE)
-    void remove(@RequestHeader(value = "Authorization") String access_token, @PathVariable String groupId, @RequestParam(required = false) String userId) {
+    void remove(@RequestParam String id, @PathVariable String groupId, @RequestParam(required = false) String userId) {
         if (userId == null)
-            if (groupService.isManager(access_token, groupId)) {
-                groupService.removeGroup(access_token, groupId);
+            if (groupService.isManager(id, groupId)) {
+                groupService.removeGroup(id, groupId);
             } else {
-                groupService.leaveGroup(access_token, groupId);
+                groupService.leaveGroup(id, groupId);
             }
         else {
-            groupService.removeMember(access_token, groupId, userId);
+            groupService.removeMember(id, groupId, userId);
         }
     }
 }

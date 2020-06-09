@@ -5,7 +5,6 @@ import com.buaa.whatupmessengermessaging.model.Group;
 import com.buaa.whatupmessengermessaging.model.GroupRequest;
 import com.buaa.whatupmessengermessaging.model.UserGroup;
 import com.buaa.whatupmessengermessaging.service.GroupService;
-import com.buaa.whatupmessengermessaging.service.UserTokenService;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -25,14 +24,10 @@ import java.util.stream.Collectors;
 @Primary
 public class GroupServiceImpl implements GroupService {
     @Autowired
-    UserTokenService userTokenService;
-    @Autowired
     MongoTemplate mongoTemplate;
 
     @Override
-    public String addGroup(String token, String name) {
-        String managerId = userTokenService.getId(token);
-
+    public String addGroup(String managerId, String name) {
         Group group = new Group(name, managerId, new ArrayList<>());
         String groupId =  mongoTemplate.insert(group, "groups").getId();
         addToProfile(managerId, groupId);
@@ -42,9 +37,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void changeName(String token, String groupId, String name) {
-        String managerId = userTokenService.getId(token);
-
+    public void changeName(String managerId, String groupId, String name) {
         Group group = mongoTemplate.findById(groupId, Group.class, "groups");
         if (group == null || !managerId.equals(group.getManagerId())) {
             throw new ForbiddenException("No such group, or you don't have access to change the group.");
@@ -55,9 +48,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void addMember(String token, GroupRequest request) {
-        String invitedBy = userTokenService.getId(token);
-
+    public void addMember(String invitedBy, GroupRequest request) {
         Group group = mongoTemplate.findById(request.getGroupId(), Group.class, "groups");
         if (group == null || !group.getUsersId().contains(invitedBy)) {
             throw new ForbiddenException("No such group, or you don't have access to add member.");
@@ -71,16 +62,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<String> getAllGroups(String token) {
-        String userId = userTokenService.getId(token);
-
+    public List<String> getAllGroups(String userId) {
         return getAllGroupsId(userId);
     }
 
     @Override
-    public List<Group> getAllGroupsDetailed(String token) {
-        String userId = userTokenService.getId(token);
-
+    public List<Group> getAllGroupsDetailed(String userId) {
         List<String> groupsId = getAllGroupsId(userId);
         return groupsId.parallelStream()
                 .map(this::getGroupById)
@@ -89,11 +76,19 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Optional<Group> getGroup(String token, String groupId) {
-        String userId = userTokenService.getId(token);
-
+    public Optional<Group> getGroup(String userId, String groupId) {
         Group group = getGroupById(groupId);
         if (group == null || !group.getUsersId().contains(userId)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(group);
+        }
+    }
+
+    @Override
+    public Optional<Group> getGroup(String groupId) {
+        Group group = getGroupById(groupId);
+        if (group == null) {
             return Optional.empty();
         } else {
             return Optional.of(group);
@@ -115,33 +110,25 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Boolean isMember(String token, String groupId) {
-        String userId = userTokenService.getId(token);
-
+    public Boolean isMember(String userId, String groupId) {
         Group group = getGroupById(groupId);
         return group != null && group.getUsersId().contains(userId);
     }
 
     @Override
-    public Boolean isManager(String token, String groupId) {
-        String userId = userTokenService.getId(token);
-
+    public Boolean isManager(String userId, String groupId) {
         Group group = getGroupById(groupId);
         return group != null && group.getManagerId().equals(userId);
     }
 
     @Override
-    public List<GroupRequest> getRequests(String token) {
-        String userId = userTokenService.getId(token);
-
+    public List<GroupRequest> getRequests(String userId) {
         Criteria criteria = Criteria.where("userId").is(userId);
         return mongoTemplate.find(Query.query(criteria), GroupRequest.class, "grouprequests");
     }
 
     @Override
-    public void acceptRequest(String token, String requestId) {
-        String userId = userTokenService.getId(token);
-
+    public void acceptRequest(String userId, String requestId) {
         GroupRequest groupRequest = mongoTemplate.findById(requestId, GroupRequest.class, "grouprequests");
         if (groupRequest == null || !userId.equals(groupRequest.getUserId())) {
             throw new ForbiddenException("No such request, or you want to accept the request that was not sent to you.");
@@ -154,9 +141,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void removeRequest(String token, String requestId) {
-        String userId = userTokenService.getId(token);
-
+    public void removeRequest(String userId, String requestId) {
         GroupRequest groupRequest = mongoTemplate.findById(requestId, GroupRequest.class, "grouprequests");
         if (groupRequest == null || !userId.equals(groupRequest.getUserId())) {
             throw new ForbiddenException("No such request, or you want to remove the request that was not sent to you.");
@@ -166,9 +151,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void leaveGroup(String token, String groupId) {
-        String userId = userTokenService.getId(token);
-
+    public void leaveGroup(String userId, String groupId) {
         Group group = mongoTemplate.findById(groupId, Group.class, "groups");
         if (group == null || !group.getUsersId().contains(userId)) {
             throw new ForbiddenException("No such group, or you are currently not in this group.");
@@ -179,9 +162,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void removeMember(String token, String groupId, String userId) {
-        String managerId = userTokenService.getId(token);
-
+    public void removeMember(String managerId, String groupId, String userId) {
         Group group = mongoTemplate.findById(groupId, Group.class, "groups");
         if (group == null || !group.getManagerId().equals(managerId) || !group.getUsersId().contains(userId) || userId.equals(managerId)) {
             throw new ForbiddenException("No such group, or you are not the manager of the group, or the user you want to remove is not in this group.");
@@ -193,9 +174,7 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    public void removeGroup(String token, String groupId) {
-        String managerId = userTokenService.getId(token);
-
+    public void removeGroup(String managerId, String groupId) {
         Group group = mongoTemplate.findById(groupId, Group.class, "groups");
         if (group == null || !group.getManagerId().equals(managerId)) {
             throw new ForbiddenException("No such group, or you are not the manager of the group.");

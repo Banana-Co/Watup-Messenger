@@ -7,25 +7,24 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GroupService {
-    String addGroup(String token, String name);
-    void changeName(String token, String groupId, String name);
-    void addMember(String token, GroupRequest request);
+    String addGroup(String managerId, String name);
+    void changeName(String managerId, String groupId, String name);
 
-    List<String> getAllGroups(String token);
-    List<Group> getAllGroupsDetailed(String token);
-    Optional<Group> getGroup(String token, String groupId);
-
+    List<String> getAllGroups(String userId);
+    List<Group> getAllGroupsDetailed(String userId);
+    Optional<Group> getGroup(String userId, String groupId);
+    Optional<Group> getGroup(String groupId);
     Group getGroupById(String groupId);
 
-    Boolean isMember(String token, String groupId);
+    Boolean isMember(String userId, String groupId);
+    Boolean isManager(String userId, String groupId);
 
-    Boolean isManager(String token, String groupId);
+    void addMember(String invitedBy, GroupRequest request);
+    List<GroupRequest> getRequests(String userId);
+    void acceptRequest(String userId, String requestId);
+    void removeRequest(String userId, String requestId);
 
-    List<GroupRequest> getRequests(String token);
-    void removeRequest(String token, String requestId);
-    void acceptRequest(String token, String groupId);
-
-    void leaveGroup(String token, String groupId);
-    void removeMember(String token, String groupId, String userId);
-    void removeGroup(String token, String groupId);
+    void leaveGroup(String userId, String groupId);
+    void removeMember(String managerId, String groupId, String userId);
+    void removeGroup(String managerId, String groupId);
 }

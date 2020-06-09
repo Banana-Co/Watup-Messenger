@@ -3,15 +3,16 @@ package com.buaa.whatupmessengermessaging.websocket;
 import com.buaa.whatupmessengermessaging.model.Group;
 import com.buaa.whatupmessengermessaging.model.GroupMessage;
 import com.buaa.whatupmessengermessaging.model.Message;
+import com.buaa.whatupmessengermessaging.service.AuthServer;
 import com.buaa.whatupmessengermessaging.service.FriendService;
 import com.buaa.whatupmessengermessaging.service.GroupService;
 import com.buaa.whatupmessengermessaging.service.MessagingService;
-import com.buaa.whatupmessengermessaging.service.UserTokenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -31,13 +32,13 @@ import java.util.Optional;
 @ChannelHandler.Sharable
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
     @Autowired
-    UserTokenService userTokenService;
-    @Autowired
     MessagingService messagingService;
     @Autowired
     FriendService friendService;
     @Autowired
     GroupService groupService;
+    @Autowired
+    AuthServer authServer;
 
     public static ObjectMapper mapper = new ObjectMapper();
     static {
@@ -72,7 +73,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         String receiverId = message.getReceiverId();
         String senderId = MessagingSession.getId(ctx);
 
-        if (receiverId == null || !friendService.isFriendById(senderId, receiverId) || friendService.isBlockById(receiverId, senderId))
+        if (receiverId == null || !friendService.isFriend(senderId, receiverId) || friendService.isBlock(receiverId, senderId))
             return;
 
         Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
@@ -116,7 +117,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println(evt.getClass());
        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
            WebSocketServerProtocolHandler.HandshakeComplete handshake = (WebSocketServerProtocolHandler.HandshakeComplete)evt;
 
@@ -124,14 +124,16 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
            QueryStringDecoder decoder = new QueryStringDecoder(uri);
            Map<String, List<String>> params = decoder.parameters();
 
-           if (params.containsKey("token")) {
-               String token = params.get("token").get(0);
-               String id = userTokenService.getId(token);
+           if (params.containsKey("access_token")) {
+               String token = params.get("access_token").get(0);
 
-               if (id != null) {
+               JsonNode node = mapper.readTree(authServer.checkToken(token));
+               JsonNode idNode = node.findValue("id");
+
+               if (idNode != null) {
                    ctx.pipeline().remove(HTTPRequestHandler.class);
 
-                   MessagingSession.addSession(token, id, ctx);
+                   MessagingSession.addSession(token, idNode.asText(), ctx);
                } else {
                    ctx.channel().close();
                }

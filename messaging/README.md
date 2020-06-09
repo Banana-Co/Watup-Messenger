@@ -30,8 +30,6 @@ ws.onerror = function(event) {
 
 ```javascript
 ws.send(JSON.stringify({
-	id: "user01",
-	message: "message",
 }))
 ```
 
@@ -81,13 +79,15 @@ ws.onclose = function(event) {
 ### 获取离线私聊消息
 
 * uri：/api/message
-* 请求方法：GET
-* 请求头
-  * Authorization
-* 参数
-  * sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
-  * drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
 
+* 请求方法：GET
+
+* 参数
+  
+  * access_token
+* sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
+  * drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
+  
 * 返回值
 
   数组，数组中每个成员的字段如下：
@@ -102,13 +102,15 @@ ws.onclose = function(event) {
 ### 获取离线群聊消息
 
 - uri：/api/groupmessage
-- 请求方法：GET
-- 请求头
-  - Authorization
-- 参数
-  - sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
-  - drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
 
+- 请求方法：GET
+
+- 参数
+  
+  - access_token
+- sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
+  - drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
+  
 - 返回值
 
   数组，数组中每个成员的字段如下：
@@ -128,7 +130,7 @@ ws.onclose = function(event) {
 
 
 
-**所有请求头都要加入 Authorization**
+**所有请求参数都要加入 access_token**
 
 
 
@@ -137,8 +139,9 @@ ws.onclose = function(event) {
 - uri：/api/group
 - 请求方法：POST
 - 参数
-  - name：群名
-
+  
+- name：群名
+  
 - 返回值
 
   新创建群聊的 id
@@ -152,8 +155,9 @@ ws.onclose = function(event) {
 - uri：/api/group/{groupId}
 - 请求方法：PUT
 - 参数
-  - name：要修改的群名
-
+  
+- name：要修改的群名
+  
 - 返回值
 
   无
@@ -246,8 +250,9 @@ ws.onclose = function(event) {
 - uri：/api/group
 - 请求方法：GET
 - 参数
-  - detailed：布尔值，默认为true，表示是否返回详细信息
-
+  
+- detailed：布尔值，默认为true，表示是否返回详细信息
+  
 - 返回值
 
   detailed 为 false 时，返回字符串数组，内容为群组id；detailed 为 true 时，返回对象数组，字段如下：
@@ -284,8 +289,9 @@ ws.onclose = function(event) {
 - uri：/api/group/{groupId}
 - 请求方法：DELETE
 - 参数
-  - userId：移除的成员 id
-
+  
+- userId：移除的成员 id
+  
 - 返回值
 
   无
