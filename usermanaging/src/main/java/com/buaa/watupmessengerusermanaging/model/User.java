@@ -12,13 +12,15 @@ import java.util.Map;
 
 @Document(collection = "users")
 public class User {
-
-
     @Id
-    private String username;
+    String id;
 
-    private String nickname;
+    private String username;
     private String password;
+
+    private String email;
+
+    private String avatarUrl;
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
@@ -29,19 +31,36 @@ public class User {
 
     }
 
-    public User(String username, String password, String nickname) {
+    public User(String id, String username, String password, String email) {
+        this.id =  id;
         this.username = username;
-        this.nickname = nickname;
         this.password = password;
+        this.email = email;
         this.createdDate = LocalDateTime.now();
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {

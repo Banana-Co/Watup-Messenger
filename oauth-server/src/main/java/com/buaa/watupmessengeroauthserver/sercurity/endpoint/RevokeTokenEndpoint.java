@@ -1,4 +1,4 @@
-package com.buaa.watupmessengeroauthserver.endpoint;
+package com.buaa.watupmessengeroauthserver.sercurity.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

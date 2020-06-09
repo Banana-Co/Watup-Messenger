@@ -3,15 +3,11 @@ package com.buaa.watupmessengeroauthserver.sercurity;
 import com.buaa.watupmessengeroauthserver.model.User;
 import com.buaa.watupmessengeroauthserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,11 +17,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User dbUser = userRepository.findByUsername(username);
-        if(dbUser != null) {
 
+        User dbUser;
+
+        if(username.contains("@")) {
+            dbUser = userRepository.findUserByEmail(username);
+        } else {
+            dbUser = userRepository.findUserById(username);
+        }
+
+        if(dbUser != null) {
             return dbUser;
-        }else {
+        } else {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
     }
