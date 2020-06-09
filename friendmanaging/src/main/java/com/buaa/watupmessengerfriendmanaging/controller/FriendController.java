@@ -20,16 +20,6 @@ public class FriendController {
     UserService userService;
     @Autowired
     FriendService friendService;
-//    @Autowired
-//    FriendFeignClient friendFeignClient;
-
-//    @RequestMapping(value = "message/feign", method = RequestMethod.GET)
-//    public Object getMessages(
-//            @RequestHeader(name = "Authorization", required = false) String token,
-//            @RequestParam(name = "sort", defaultValue = "asc") String sort,
-//            @RequestParam(name = "group", defaultValue = "true") Boolean group) {
-//        return friendFeignClient.getMessages(token, sort, group);
-//    }
 
     @RequestMapping(value = "friend/search", method = RequestMethod.GET)
     public ResponseEntity<Object> getFriend(

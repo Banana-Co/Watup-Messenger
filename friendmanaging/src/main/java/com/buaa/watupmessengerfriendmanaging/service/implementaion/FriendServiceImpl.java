@@ -39,7 +39,9 @@ public class FriendServiceImpl implements FriendService {
                 .get()
                 .getFriends();
         if (friends == null) {
-            return ResponseEntityFactory.getInstance().produceSuccess(new ArrayList<>());
+            return ResponseEntityFactory
+                    .getInstance()
+                    .produceSuccess(new ArrayList<>());
         }
         List<User> data = friends
                 .keySet()
@@ -49,7 +51,9 @@ public class FriendServiceImpl implements FriendService {
                         .orElse(new User()))
                 .filter(u -> u.getNickname().contains(username))
                 .collect(Collectors.toList());
-        return ResponseEntityFactory.getInstance().produceSuccess(data);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
     }
 
     @Override
@@ -61,10 +65,12 @@ public class FriendServiceImpl implements FriendService {
         }
         User user = userOptional.get();
         User friend = friendOptional.get();
-        if (deleteFriend(user, friend.getId()) || deleteFriend(friend, user.getId())) {
+        if (deleteFriend(user, friendId) || deleteFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -77,7 +83,9 @@ public class FriendServiceImpl implements FriendService {
                 .get()
                 .getFriends();
         if (friends == null) {
-            return ResponseEntityFactory.getInstance().produceSuccess(new ArrayList<>());
+            return ResponseEntityFactory
+                    .getInstance()
+                    .produceSuccess(new ArrayList<>());
         }
         List<User> data = friends
                 .keySet()
@@ -86,7 +94,9 @@ public class FriendServiceImpl implements FriendService {
                         .getUserById(u)
                         .orElse(new User()))
                 .collect(Collectors.toList());
-        return ResponseEntityFactory.getInstance().produceSuccess(data);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
     }
 
     @Override
@@ -105,7 +115,9 @@ public class FriendServiceImpl implements FriendService {
         }
         user.getBlocks().add(friendId);
         userRepository.save(user);
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -121,7 +133,9 @@ public class FriendServiceImpl implements FriendService {
         }
         user.getBlocks().remove(friendId);
         userRepository.save(user);
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -134,7 +148,9 @@ public class FriendServiceImpl implements FriendService {
                 .get()
                 .getBlocks();
         if (blocks == null) {
-            return ResponseEntityFactory.getInstance().produceSuccess(new ArrayList<>());
+            return ResponseEntityFactory
+                    .getInstance()
+                    .produceSuccess(new ArrayList<>());
         }
         List<User> data = blocks
                 .stream()
@@ -142,7 +158,9 @@ public class FriendServiceImpl implements FriendService {
                         .getUserById(u)
                         .orElse(new User()))
                 .collect(Collectors.toList());
-        return ResponseEntityFactory.getInstance().produceSuccess(data);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
     }
 
     @Override
@@ -157,7 +175,9 @@ public class FriendServiceImpl implements FriendService {
         if (user.getFriends() == null || !user.getFriends().containsKey(friendId)) {
             data = false;
         }
-        return ResponseEntityFactory.getInstance().produceSuccess(data);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
     }
 
     @Override
@@ -172,7 +192,9 @@ public class FriendServiceImpl implements FriendService {
         if (user.getBlocks() == null || !user.getBlocks().contains(friendId)) {
             data = false;
         }
-        return ResponseEntityFactory.getInstance().produceSuccess(data);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
     }
 
     @Override
@@ -227,7 +249,9 @@ public class FriendServiceImpl implements FriendService {
             throw new UserNotFoundException();
         }
         List<FriendRequest> friendRequests=friendRequestRepository.getByReceiverId(id);
-        return ResponseEntityFactory.getInstance().produceSuccess(friendRequests);
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(friendRequests);
     }
 
 
@@ -238,14 +262,15 @@ public class FriendServiceImpl implements FriendService {
         if (userOptional.isEmpty() || friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
-        User user = userOptional.get();
         User friend = friendOptional.get();
         if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
         FriendRequest friendRequest=FriendRequestFactory.produce(userId,friendId,remark);
         friendRequestRepository.save(friendRequest);
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -259,7 +284,8 @@ public class FriendServiceImpl implements FriendService {
         if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
-        Optional<User> friendOptional = userService.getUserById(friendRequest.get().getSenderId());
+        Optional<User> friendOptional = userService
+                .getUserById(friendRequest.get().getSenderId());
         if (friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
@@ -268,7 +294,9 @@ public class FriendServiceImpl implements FriendService {
             throw new ConflictException("请求已被处理");
         }
         friendRequestRepository.delete(friendRequest.get());
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -278,7 +306,9 @@ public class FriendServiceImpl implements FriendService {
             throw new ConflictException("请求已被处理");
         }
         friendRequestRepository.delete(friendRequest.get());
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     @Override
@@ -294,7 +324,9 @@ public class FriendServiceImpl implements FriendService {
         }
         user.getFriends().put(friendId, nickname);
         userRepository.save(user);
-        return ResponseEntityFactory.getInstance().produceSuccess();
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess();
     }
 
     //用于测试而初始化昵称

@@ -18,10 +18,10 @@ public class ResponseEntityFactory {
 
 
     public ResponseEntity<Object> produceSuccess() {
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     public ResponseEntity<Object> produceSuccess(Object object) {
-        return new ResponseEntity<>(object,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(object,HttpStatus.OK);
     }
 
 

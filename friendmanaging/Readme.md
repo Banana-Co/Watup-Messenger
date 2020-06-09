@@ -14,15 +14,18 @@
 - 屏蔽好友（不会删除好友）
 - 撤销屏蔽好友
 - 获取黑名单
-- 根据token查询用户是否是好友
-- 根据token查询用户是否被屏蔽
+- 查询用户是否是好友
+- 查询用户是否被屏蔽
 - 根据id查询用户是否是好友
 - 根据id查询用户是否被屏蔽
 - 获取好友id列表
+- 根据id获取好友id列表
 
 # 接口说明
 
- token由header中的Authorization字段传递 
+- 前端传递access_token后经api gateway转换为id字段
+
+- 向前端暴露的接口uri前会加/api
 
 ## 查找好友
 
@@ -36,14 +39,14 @@ GET
 
 ### URI
 
-/api/friend
+/api/friend/search
 
 ### 参数
 
-| 字段     | 类型   | 描述         |
-| :------- | ------ | ------------ |
-| token    | Token  | 用户标识     |
-| username | String | 查找的关键字 |
+| 字段         | 类型   | 描述         |
+| :----------- | ------ | ------------ |
+| access_token | String | 用户标识     |
+| username     | String | 查找的关键字 |
 
 ### 返回值
 
@@ -71,7 +74,7 @@ GET
 
 ### 接口描述
 
-根据用户token获取好友列表
+根据用户access_token获取好友列表
 
 ### 请求方法
 
@@ -83,9 +86,9 @@ GET
 
 ### 参数
 
-| 字段  | 类型  | 描述     |
-| :---- | ----- | -------- |
-| token | Token | 用户标识 |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
 
 ### 返回值
 
@@ -125,10 +128,11 @@ POST
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
+| remark       | String | 申请备注 |
 
 ### 返回值
 
@@ -160,7 +164,7 @@ POST
 
 ### 接口描述
 
-通过指定id的所有好友申请
+通过指定id的好友申请
 
 ### 请求方法
 
@@ -172,10 +176,10 @@ PUT
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| requestId    | String | 申请的ID |
 
 ### 返回值
 
@@ -185,28 +189,10 @@ PUT
 - message: “通过成功”
 - data: null
 
-#### 未找到好友
-
-- code: 404
-- message: "未找到好友"
-- data: null
-
-#### 被对方屏蔽
-
-- code: 403
-- message: "被对方屏蔽"
-- data: null
-
-#### 好友申请为空
-
-- code: 404
-- message: "好友申请为空"
-- data: null
-
-#### 已添加好友
+#### 请求已被处理
 
 - code: 409
-- message: "已添加好友"
+- message: "请求已被处理"
 - data: null
 
 #### 其他错误
@@ -231,10 +217,10 @@ DELETE
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| requestId    | String | 申请的ID |
 
 ### 返回值
 
@@ -244,16 +230,10 @@ DELETE
 - message: “拒绝成功”
 - data: null
 
-#### 未找到好友
+#### 请求已被处理
 
-- code: 404
-- message: "未找到好友"
-- data: null
-
-#### 好友申请为空
-
-- code: 404
-- message: "好友申请为空"
+- code: 409
+- message: "请求已被处理"
 - data: null
 
 #### 其他错误
@@ -278,10 +258,10 @@ DELETE
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
 
 ### 返回值
 
@@ -313,7 +293,7 @@ DELETE
 
 ### 接口描述
 
-根据用户token获取好友列表
+根据用户access_token获取好友列表
 
 ### 请求方法
 
@@ -325,9 +305,9 @@ GET
 
 ### 参数
 
-| 字段  | 类型  | 描述     |
-| :---- | ----- | -------- |
-| token | Token | 用户标识 |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
 
 ### 返回值
 
@@ -367,11 +347,11 @@ PUT
 
 ### 参数
 
-| 字段     | 类型   | 描述       |
-| :------- | ------ | ---------- |
-| token    | Token  | 用户标识   |
-| id       | String | 好友的ID   |
-| nickname | String | 好友的备注 |
+| 字段         | 类型   | 描述       |
+| :----------- | ------ | ---------- |
+| access_token | String | 用户标识   |
+| friendId     | String | 好友的ID   |
+| nickname     | String | 好友的备注 |
 
 ### 返回值
 
@@ -409,10 +389,10 @@ PUT
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
 
 ### 返回值
 
@@ -456,10 +436,10 @@ DELETE
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
 
 ### 返回值
 
@@ -491,7 +471,7 @@ DELETE
 
 ### 接口描述
 
-根据用户token获取黑名单
+根据用户access_token获取黑名单
 
 ### 请求方法
 
@@ -503,9 +483,9 @@ GET
 
 ### 参数
 
-| 字段  | 类型  | 描述     |
-| :---- | ----- | -------- |
-| token | Token | 用户标识 |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
 
 ### 返回值
 
@@ -545,10 +525,10 @@ GET
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
 
 ### 返回值
 
@@ -583,160 +563,10 @@ GET
 
 ### 参数
 
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-
-- message: “success”
-
-- data: true/false
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 查询用户是否是好友
-
-### 接口描述
-
-根据id判断是否是用户的好友
-
-### 请求方法
-
-GET
-
-### URI
-
-/api/friend
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-
-- message: “success”
-
-- data: true/false
-
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 查询用户是否被屏蔽
-
-### 接口描述
-
-根据id判断用户是否被屏蔽
-
-### 请求方法
-
-GET
-
-### URI
-
-/api/friend/block
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-
-- message: “success”
-
-- data: true/false
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 根据token查询用户是否是好友
-
-### 接口描述
-
-根据token判断是否是用户的好友
-
-### 请求方法
-
-GET
-
-### URI
-
-/api/friend
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
-
-### 返回值
-
-#### 成功
-
-- code: 200
-
-- message: “success”
-
-- data: true/false
-
-
-#### 其他错误
-
-- code: 400
-- message: "其他错误"
-- data: null
-
-## 根据token查询用户是否被屏蔽
-
-### 接口描述
-
-根据token判断用户是否被屏蔽
-
-### 请求方法
-
-GET
-
-### URI
-
-/api/friend/block
-
-### 参数
-
-| 字段  | 类型   | 描述     |
-| :---- | ------ | -------- |
-| token | Token  | 用户标识 |
-| id    | String | 好友的ID |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| friendId     | String | 好友的ID |
 
 ### 返回值
 
@@ -766,7 +596,7 @@ GET
 
 ### URI
 
-/api/friend
+/friend
 
 ### 参数
 
@@ -804,7 +634,7 @@ GET
 
 ### URI
 
-/api/friend/block
+/friend/block
 
 ### 参数
 
@@ -833,7 +663,7 @@ GET
 
 ### 接口描述
 
-根据用户token获取好友id列表
+根据用户access_token获取好友id列表
 
 ### 请求方法
 
@@ -841,13 +671,55 @@ GET
 
 ### URI
 
-/api/friends
+/api/friends/id
 
 ### 参数
 
-| 字段  | 类型  | 描述     |
-| :---- | ----- | -------- |
-| token | Token | 用户标识 |
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “获取成功”
+
+- data: friends(Array)
+
+  friends:
+
+  | 字段 | 类型   | 描述   |
+  | :--- | ------ | ------ |
+  | id   | String | 用户id |
+
+#### 其他错误
+
+- code: 400
+- message: "其他错误"
+- data: null
+
+## 根据id获取好友id列表
+
+### 接口描述
+
+根据用户id获取好友id列表
+
+### 请求方法
+
+GET
+
+### URI
+
+/friends/id
+
+### 参数
+
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
 
 ### 返回值
 

@@ -6,10 +6,6 @@ import org.springframework.http.ResponseEntity;
  * @author Cast
  */
 public interface GroupService {
-    /**
-     * @param users
-     * @return
-     */
     ResponseEntity<Object> creatGroup(String token,String[] users);
 
     ResponseEntity<Object> inviteToGroup(String userId,String groupId);
