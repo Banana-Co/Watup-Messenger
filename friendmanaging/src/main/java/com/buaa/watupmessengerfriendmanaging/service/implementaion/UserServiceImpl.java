@@ -31,15 +31,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByNickname(String username) {
-        return userRepository.getByNickname(username);
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.getByUsername(username);
     }
 
     @Override
     public void addUser(String id,String username) {
         User user=new User();
         user.setId(id);
-        user.setNickname(username);
+        user.setUsername(username);
         user.setCreatedDate(LocalDateTime.now());
         userRepository.save(user);
     }

@@ -14,12 +14,14 @@ import java.util.Map;
 public class User {
     @Id
     private String id;
-    private String nickname;
+    private String username;
+    private String password;
+    private String email;
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
     private List<String> groups;
-    private String avatarUrl ="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+    private String avatarUrl;
     public String getId() {
         return id;
     }
@@ -28,12 +30,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<String> getBlocks() {
@@ -74,5 +76,21 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
