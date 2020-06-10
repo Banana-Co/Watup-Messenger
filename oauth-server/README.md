@@ -1,6 +1,4 @@
-# UserManaging文档
-
-## auth-server
+# auth-server文档
 
 ###  完成部分
 
