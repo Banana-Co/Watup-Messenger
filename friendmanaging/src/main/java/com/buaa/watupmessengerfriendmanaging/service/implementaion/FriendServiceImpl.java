@@ -1,5 +1,6 @@
 package com.buaa.watupmessengerfriendmanaging.service.implementaion;
 
+import com.buaa.watupmessengerfriendmanaging.model.Friend;
 import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.exception.ConflictException;
@@ -43,13 +44,16 @@ public class FriendServiceImpl implements FriendService {
                     .getInstance()
                     .produceSuccess(new ArrayList<>());
         }
-        List<User> data = friends
+        List<Friend> data = friends
                 .keySet()
                 .stream()
-                .map(u -> userService
-                        .getUserById(u)
-                        .orElse(new User()))
-                .filter(u -> u.getNickname().contains(username))
+                .map(u -> friendByUser(userService
+                                .getUserById(u)
+                                .orElse(new User())
+                        ,friends.get(u)))
+                .filter(u -> u
+                        .getUsername()
+                        .contains(username))
                 .collect(Collectors.toList());
         return ResponseEntityFactory
                 .getInstance()
@@ -87,12 +91,13 @@ public class FriendServiceImpl implements FriendService {
                     .getInstance()
                     .produceSuccess(new ArrayList<>());
         }
-        List<User> data = friends
+        List<Friend> data = friends
                 .keySet()
                 .stream()
-                .map(u -> userService
-                        .getUserById(u)
-                        .orElse(new User()))
+                .map(u -> friendByUser(userService
+                                .getUserById(u)
+                                .orElse(new User())
+                        ,friends.get(u)))
                 .collect(Collectors.toList());
         return ResponseEntityFactory
                 .getInstance()
@@ -152,11 +157,11 @@ public class FriendServiceImpl implements FriendService {
                     .getInstance()
                     .produceSuccess(new ArrayList<>());
         }
-        List<User> data = blocks
+        List<Friend> data = blocks
                 .stream()
-                .map(u -> userService
-                        .getUserById(u)
-                        .orElse(new User()))
+                .map(u -> friendByUser(userService
+                                .getUserById(u)
+                                .orElse(new User())))
                 .collect(Collectors.toList());
         return ResponseEntityFactory
                 .getInstance()
@@ -362,5 +367,28 @@ public class FriendServiceImpl implements FriendService {
         friends.remove(id);
         userRepository.save(user);
         return false;
+    }
+    private Friend friendByUser(User user,String nickname){
+        if (user.getId()==null){
+            throw new UserNotFoundException();
+        }
+        Friend friend=new Friend();
+        friend.setId(user.getId());
+        friend.setUsername(user.getUsername());
+        friend.setNickname(nickname);
+        friend.setAvatarUrl(user.getAvatarUrl());
+        friend.setCreatedDate(user.getCreatedDate());
+        return friend;
+    }
+    private Friend friendByUser(User user){
+        if (user.getId()==null){
+            throw new UserNotFoundException();
+        }
+        Friend friend=new Friend();
+        friend.setId(user.getId());
+        friend.setUsername(user.getUsername());
+        friend.setAvatarUrl(user.getAvatarUrl());
+        friend.setCreatedDate(user.getCreatedDate());
+        return friend;
     }
 }

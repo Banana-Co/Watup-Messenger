@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> getUserById(String id);
 
-    Optional<User> getUserByNickname(String username);
+    Optional<User> getUserByUsername(String username);
 
     void addUser(String id, String username);
 }
