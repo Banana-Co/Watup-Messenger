@@ -52,6 +52,7 @@ public class GroupController {
 
     @RequestMapping(value = "/request", method = RequestMethod.GET)
     List<GroupRequest> getRequests(@RequestParam String id) {
+        System.out.println(id);
         return groupService.getRequests(id);
     }
 

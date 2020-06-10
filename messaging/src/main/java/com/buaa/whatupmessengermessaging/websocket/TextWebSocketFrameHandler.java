@@ -1,5 +1,6 @@
 package com.buaa.whatupmessengermessaging.websocket;
 
+import com.buaa.whatupmessengermessaging.model.CheckTokenResult;
 import com.buaa.whatupmessengermessaging.model.Group;
 import com.buaa.whatupmessengermessaging.model.GroupMessage;
 import com.buaa.whatupmessengermessaging.model.Message;
@@ -12,7 +13,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -127,13 +127,13 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
            if (params.containsKey("access_token")) {
                String token = params.get("access_token").get(0);
 
-               JsonNode node = mapper.readTree(authServer.checkToken(token));
-               JsonNode idNode = node.findValue("id");
+               CheckTokenResult result = authServer.checkToken(token);
+               String id = result.getId();
 
-               if (idNode != null) {
+               if (id != null) {
                    ctx.pipeline().remove(HTTPRequestHandler.class);
 
-                   MessagingSession.addSession(token, idNode.asText(), ctx);
+                   MessagingSession.addSession(token, id, ctx);
                } else {
                    ctx.channel().close();
                }
