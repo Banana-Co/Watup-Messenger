@@ -266,7 +266,7 @@ POST
 
 ### URI
 
-/oauth/access_token
+/oauth/check_token
 
 ### 参数
 
