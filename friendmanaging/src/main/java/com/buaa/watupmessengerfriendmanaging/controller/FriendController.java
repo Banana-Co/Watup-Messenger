@@ -21,6 +21,13 @@ public class FriendController {
     @Autowired
     FriendService friendService;
 
+    @RequestMapping(value = "friend/user", method = RequestMethod.GET)
+    public ResponseEntity<?> getUser(
+            @RequestParam String id
+            , @RequestParam String keyword) {
+        return userService.getFriend(keyword);
+    }
+
     @RequestMapping(value = "friend/search", method = RequestMethod.GET)
     public ResponseEntity<Object> getFriend(
             @RequestParam String id
