@@ -32,7 +32,34 @@ public class FriendServiceImpl implements FriendService {
     private FriendRequestRepository friendRequestRepository;
 
     @Override
-    public ResponseEntity<Object> getFriend(String id, String username) {
+    public ResponseEntity<Object> getFriendById(String id, String friendId) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        Map<String, String> friends = user
+                .get()
+                .getFriends();
+        if (friends == null||!friends.containsKey(friendId)) {
+            return ResponseEntityFactory
+                    .getInstance()
+                    .produceNotFound("未找到好友");
+        }
+        Optional<User> friend=userService.getUserById(friendId);
+        if (friend.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        Friend data=friendByUser(friend.get());
+        if (friends.get(friendId)!=null){
+            data.setNickname(friends.get(friendId));
+        }
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
+    }
+
+    @Override
+    public ResponseEntity<Object> getFriendByUsername(String id, String username) {
         Optional<User> user = userService.getUserById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException();

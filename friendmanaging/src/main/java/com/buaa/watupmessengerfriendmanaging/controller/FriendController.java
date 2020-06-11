@@ -27,12 +27,18 @@ public class FriendController {
             , @RequestParam String keyword) {
         return userService.getFriend(keyword);
     }
+    @RequestMapping(value = "friend/search/id", method = RequestMethod.GET)
+    public ResponseEntity<?> getFriendById(
+            @RequestParam String id
+            , @RequestParam String friendId) {
+        return friendService.getFriendById(id,friendId);
+    }
 
-    @RequestMapping(value = "friend/search", method = RequestMethod.GET)
-    public ResponseEntity<Object> getFriend(
+    @RequestMapping(value = "friend/search/username", method = RequestMethod.GET)
+    public ResponseEntity<Object> getFriendByUsername(
             @RequestParam String id
             , @RequestParam String username) {
-        return friendService.getFriend(id, username);
+        return friendService.getFriendByUsername(id, username);
     }
 
     @RequestMapping(value = "friend/request", method = RequestMethod.GET)

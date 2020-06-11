@@ -11,13 +11,21 @@ import java.util.List;
  */
 public interface FriendService {
     /**
+     * 根据id查找当前用户的好友，返回对应好友
+     *
+     * @param id    用户id
+     * @param friendId 好友id
+     * @return 好友列表
+     */
+    ResponseEntity<Object> getFriendById(String id, String friendId);
+    /**
      * 根据关键字查找当前用户的好友，返回好友列表
      *
      * @param id    用户id
      * @param username 关键字
      * @return 好友列表
      */
-    ResponseEntity<Object> getFriend(String id, String username);
+    ResponseEntity<Object> getFriendByUsername(String id, String username);
 
 
     /**

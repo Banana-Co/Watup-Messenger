@@ -4,7 +4,8 @@
 
 - 已部署到106.12.204.55:8000
 - 查找用户
-- 查找好友
+- 根据id查找好友
+- 根据username查找好友
 - 获取好友申请列表
 - 发送好友申请
 - 通过好友申请
@@ -65,7 +66,48 @@ GET
 - message: "不应出现的数据库错误"
 - data: null
 
-## 查找好友
+## 根据id查找好友
+
+### 接口描述
+
+根据id查找当前用户的好友，返回好友
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/search/id
+
+### 参数
+
+| 字段         | 类型   | 描述     |
+| :----------- | ------ | -------- |
+| access_token | String | 用户标识 |
+| id           | String | 好友     |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “查找成功”
+- data: friend(Friend)
+
+#### 未找到好友
+
+- code: 404
+- message: "未找到好友"
+- data: null
+
+#### 不应出现的数据库错误
+
+- code: 404
+- message: "不应出现的数据库错误"
+- data: null
+
+## 根据username查找好友
 
 ### 接口描述
 
@@ -77,7 +119,7 @@ GET
 
 ### URI
 
-/api/friend/search
+/api/friend/search/username
 
 ### 参数
 
