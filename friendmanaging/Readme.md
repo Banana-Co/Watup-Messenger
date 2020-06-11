@@ -3,6 +3,7 @@
 ## 完成部分
 
 - 已部署到106.12.204.55:8000
+- 查找用户
 - 查找好友
 - 获取好友申请列表
 - 发送好友申请
@@ -24,8 +25,50 @@
 # 接口说明
 
 - 前端传递access_token后经api gateway转换为id字段
-
 - 向前端暴露的接口uri前会加/api
+
+## 查找用户
+
+### 接口描述
+
+根据关键字查找系统用户，返回匹配列表
+
+### 请求方法
+
+GET
+
+### URI
+
+/api/friend/user
+
+### 参数
+
+| 字段         | 类型   | 描述         |
+| :----------- | ------ | ------------ |
+| access_token | String | 用户标识     |
+| keyword      | String | 查找的关键字 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “查找成功”
+
+- data: users(Array)
+
+  users：
+
+  | 字段   | 类型   | 描述 |
+  | :----- | ------ | ---- |
+  | friend | Friend | 用户 |
+
+#### 其他错误
+
+- code: 404
+- message: "不应出现的数据库错误"
+- data: null
 
 ## 查找好友
 
@@ -60,14 +103,14 @@ GET
 
   users：
 
-  | 字段   | 类型 | 描述 |
-  | :----- | ---- | ---- |
-  | friend | User | 好友 |
+  | 字段   | 类型   | 描述 |
+  | :----- | ------ | ---- |
+  | friend | Friend | 好友 |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 获取好友申请列表
@@ -106,10 +149,10 @@ GET
   | :------------ | ------------- | -------- |
   | friendRequest | friendRequest | 好友申请 |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 发送好友申请
@@ -154,10 +197,10 @@ POST
 - message: "未找到好友"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 通过好友申请
@@ -195,10 +238,10 @@ PUT
 - message: "请求已被处理"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 拒绝好友申请
@@ -236,10 +279,10 @@ DELETE
 - message: "请求已被处理"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 删除好友
@@ -283,10 +326,10 @@ DELETE
 - message: "好友已被删除"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 获取好友列表
@@ -325,10 +368,10 @@ GET
   | :----- | ------ | ---- |
   | friend | Friend | 用户 |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 设置好友备注
@@ -367,10 +410,10 @@ PUT
 - message: "未找到好友"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 屏蔽好友
@@ -414,10 +457,10 @@ PUT
 - message: "好友已被屏蔽"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 撤销屏蔽好友
@@ -461,10 +504,10 @@ DELETE
 - message: "屏蔽已被处理"
 - data: null
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 获取黑名单
@@ -503,10 +546,10 @@ GET
   | :----- | ------ | ---- |
   | friend | Friend | 用户 |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 查询用户是否是好友
@@ -541,10 +584,10 @@ GET
 - data: true/false
 
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 查询用户是否被屏蔽
@@ -578,10 +621,10 @@ GET
 
 - data: true/false
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 根据id查询用户是否是好友
@@ -616,10 +659,10 @@ GET
 - data: true/false
 
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 根据id查询用户是否被屏蔽
@@ -653,10 +696,10 @@ GET
 
 - data: true/false
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 获取好友id列表
@@ -695,10 +738,10 @@ GET
   | :--- | ------ | ------ |
   | id   | String | 用户id |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null
 
 ## 根据id获取好友id列表
@@ -737,8 +780,8 @@ GET
   | :--- | ------ | ------ |
   | id   | String | 用户id |
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 400
-- message: "其他错误"
+- code: 404
+- message: "不应出现的数据库错误"
 - data: null

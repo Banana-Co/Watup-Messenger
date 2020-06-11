@@ -1,5 +1,7 @@
 package com.buaa.watupmessengerfriendmanaging.service.serviceInterface;
 
+import com.buaa.watupmessengerfriendmanaging.model.Friend;
+import com.buaa.watupmessengerfriendmanaging.model.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -144,4 +146,19 @@ public interface FriendService {
      * @return 结果
      */
     ResponseEntity<Object> getFriendRequest(String id);
+
+    /**
+     * 根据用户返回friend类
+     * @param user 用户
+     * @return friend类
+     */
+    Friend friendByUser(User user);
+
+    /**
+     * 根据用户返回好友
+     * @param user 用户
+     * @param nickname 昵称
+     * @return friend类
+     */
+    Friend friendByUser(User user,String nickname);
 }
