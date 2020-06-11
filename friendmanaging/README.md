@@ -85,7 +85,7 @@ GET
 | 字段         | 类型   | 描述     |
 | :----------- | ------ | -------- |
 | access_token | String | 用户标识 |
-| id           | String | 好友     |
+| friendId           | String | 好友     |
 
 ### 返回值
 
