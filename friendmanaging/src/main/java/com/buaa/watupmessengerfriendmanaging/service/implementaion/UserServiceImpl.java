@@ -45,14 +45,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<?> getFriend(String id) {
-        List<Friend> friends= userRepository
-                .getByIdLike(id)
-                .stream()
-                .map(u->friendService.friendByUser(u))
-                .collect(Collectors.toList());
+        Friend friend=friendService
+                .friendByUser(userRepository
+                        .getById(id)
+                        .orElse(new User()));
         return ResponseEntityFactory
                 .getInstance()
-                .produceSuccess(friends);
+                .produceSuccess(friend);
     }
 
     @Override
