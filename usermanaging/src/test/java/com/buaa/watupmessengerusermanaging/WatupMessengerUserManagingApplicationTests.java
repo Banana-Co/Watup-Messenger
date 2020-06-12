@@ -11,18 +11,9 @@ import java.util.Arrays;
 class WatupMessengerUserManagingApplicationTests {
 
 
-    @Autowired
-    UserEntityRepository userEntityRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Test
     void contextLoads() {
-        if (this.userEntityRepository.findByUsername("dastur") == null) {
-            UserEntity user = new UserEntity("Leon Dastur", "dastur", passwordEncoder.encode("rokin123"), Arrays.asList("ADMIN"));
-            this.userEntityRepository.save(user);
-        }
     }
 
 }

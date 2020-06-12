@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
+    public RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public TokenStore tokenStore() {

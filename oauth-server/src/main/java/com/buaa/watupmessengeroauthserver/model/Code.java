@@ -8,13 +8,7 @@ import java.time.LocalDateTime;
 @Document(collection = "code")
 public class Code {
 
-    public String get_id() {
-        return _id;
-    }
 
-    public void set_id(String _id) {
-        this._id = _id;
-    }
 
     @Id
     String _id;
@@ -22,6 +16,14 @@ public class Code {
     private String email;
     private String code;
     private LocalDateTime timeStamp;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public Code(String email, String code) {
         this.email = email;

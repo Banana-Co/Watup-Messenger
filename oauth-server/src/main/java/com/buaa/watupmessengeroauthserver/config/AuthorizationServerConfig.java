@@ -46,8 +46,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("watup"))
                 .authorizedGrantTypes("password", "client_credentials", "refresh_token")
                 .scopes("all")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(86400);
+                .accessTokenValiditySeconds(2592000)
+                .refreshTokenValiditySeconds(2592000+86400);
     }
 
     @Override
@@ -77,5 +77,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public DefaultAccessTokenConverter accessTokenConverter() {
         return new DefaultAccessTokenConverter();
     }
+
+
 
 }

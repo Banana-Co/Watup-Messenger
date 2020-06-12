@@ -28,8 +28,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/oauth")
 public class AuthController {
+
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -53,28 +56,27 @@ public class AuthController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Result register(HttpServletRequest req, HttpServletResponse res) {
+    public Result register(HttpServletRequest req) {
+
         String userId = req.getParameter("id");
         String code = req.getParameter("code");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
+        logger.info("email", email);
 
         Code dbCode = codeRepository.findByEmail(email);
         if(dbCode == null) {
-            return ResultFactory.buildFailResult("验证码错误");
+            return ResultFactory.buildFailResult("邮箱错误");
         }
         if(!dbCode.getCode().equals(code)) {
-            codeRepository.delete(dbCode);
             return ResultFactory.buildFailResult("验证码错误");
         }
         if(dbCode.getTimeStamp().plusMinutes(5).compareTo(LocalDateTime.now()) < 0){
             codeRepository.delete(dbCode);
             return  ResultFactory.buildFailResult("验证码过期");
         }
-        if(userRepository.findUserById(userId)!=null) {
-            return ResultFactory.buildFailResult("用户已存在");
-        }
+        codeRepository.delete(dbCode);
         User user = new User(userId, username, new BCryptPasswordEncoder().encode(password),  email);
         user.setAvatarUrl("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
         mongoTemplate.save(user, "user");
@@ -88,7 +90,7 @@ public class AuthController {
 
         ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
         //设置请求认证授权的服务器的地址
-        details.setAccessTokenUri("http://localhost:8080/oauth/token");
+        details.setAccessTokenUri("http://localhost:8081/oauth/token");
         //下面都是认证信息：所拥有的权限，认证的客户端，具体的用户
         details.setScope(Arrays.asList("all"));
         details.setClientId("watup");
@@ -132,12 +134,10 @@ public class AuthController {
         String email = req.getParameter("email");
         User dbUser = userRepository.findUserByEmail(email);
         if(dbUser != null) {
-            return ResultFactory.buildFailResult("该邮箱已被绑定");
+            return ResultFactory.buildFailResult("邮箱已被绑定");
         }
         Code dbCode = codeRepository.findByEmail(email);
-        if(dbCode!=null && dbCode.getTimeStamp().plusMinutes(5).compareTo(LocalDateTime.now()) > 0) {
-            return ResultFactory.buildFailResult("验证码依然有效");
-        }else if(dbCode!=null && dbCode.getTimeStamp().plusMinutes(5).compareTo(LocalDateTime.now()) < 0){
+        if(dbCode!=null){
             codeRepository.delete(dbCode);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
