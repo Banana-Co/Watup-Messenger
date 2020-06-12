@@ -11,3 +11,5 @@ websocket: <ws://106.13.110.96:8088/ws>
 
 [聊天部分接口](messaging/README.md)
 
+[用户信息部分接口](usermanaging/README.md)
+
