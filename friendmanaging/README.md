@@ -53,17 +53,14 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “查找成功”
+- status: 200
 
 - data: user(Friend)
 
 
-#### 其他错误
+#### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 根据id查找好友
@@ -91,20 +88,17 @@ GET
 
 #### 成功
 
-- code: 200
-- message: “查找成功”
+- status: 200
 - data: friend(Friend)
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 根据username查找好友
@@ -132,9 +126,7 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “查找成功”
+- status: 200
 
 - data: users(Array)
 
@@ -146,8 +138,7 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 获取好友申请列表
@@ -174,7 +165,7 @@ GET
 
 #### 成功
 
-- code: 200
+- status: 200
 
 - message: “获取成功”
 
@@ -188,7 +179,7 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
+- status: 404
 - message: "不应出现的数据库错误"
 - data: null
 
@@ -218,26 +209,22 @@ POST
 
 #### 成功
 
-- code: 200
-- message: “添加成功”
+- status: 200
 - data: null
 
 #### 被对方屏蔽
 
-- code: 403
-- message: "被对方屏蔽"
+- status: 403
 - data: null
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 通过好友申请
@@ -265,20 +252,17 @@ PUT
 
 #### 成功
 
-- code: 200
-- message: “通过成功”
+- status: 200
 - data: null
 
 #### 请求已被处理
 
-- code: 409
-- message: "请求已被处理"
+- status: 409
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 拒绝好友申请
@@ -306,20 +290,17 @@ DELETE
 
 #### 成功
 
-- code: 200
-- message: “拒绝成功”
+- status: 200
 - data: null
 
 #### 请求已被处理
 
-- code: 409
-- message: "请求已被处理"
+- status: 409
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 删除好友
@@ -347,26 +328,22 @@ DELETE
 
 #### 成功
 
-- code: 200
-- message: “删除成功”
+- status: 200
 - data: null
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 好友已被删除
 
-- code: 409
-- message: "好友已被删除"
+- status: 409
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 获取好友列表
@@ -393,9 +370,7 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “获取成功”
+- status: 200
 
 - data: friends(Array)
 
@@ -407,8 +382,7 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 设置好友备注
@@ -437,20 +411,17 @@ PUT
 
 #### 成功
 
-- code: 200
-- message: “设置成功”
+- status: 200
 - data: null
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 屏蔽好友
@@ -478,26 +449,22 @@ PUT
 
 #### 成功
 
-- code: 200
-- message: “屏蔽成功”
+- status: 200
 - data: null
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 好友已被屏蔽
 
-- code: 409
-- message: "好友已被屏蔽"
+- status: 409
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 撤销屏蔽好友
@@ -525,26 +492,22 @@ DELETE
 
 #### 成功
 
-- code: 200
-- message: “屏蔽成功”
+- status: 200
 - data: null
 
 #### 未找到好友
 
-- code: 404
-- message: "未找到好友"
+- status: 404
 - data: null
 
 #### 屏蔽已被处理
 
-- code: 404
-- message: "屏蔽已被处理"
+- status: 404
 - data: null
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 获取黑名单
@@ -571,9 +534,7 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “获取成功”
+- status: 200
 
 - data: friends(Array)
 
@@ -585,8 +546,7 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 查询用户是否是好友
@@ -614,17 +574,14 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “success”
+- status: 200
 
 - data: true/false
 
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 查询用户是否被屏蔽
@@ -652,16 +609,13 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “success”
+- status: 200
 
 - data: true/false
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 根据id查询用户是否是好友
@@ -689,17 +643,14 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “success”
+- status: 200
 
 - data: true/false
 
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 根据id查询用户是否被屏蔽
@@ -727,16 +678,13 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “success”
+- status: 200
 
 - data: true/false
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 获取好友id列表
@@ -763,9 +711,7 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “获取成功”
+- status: 200
 
 - data: friends(Array)
 
@@ -777,8 +723,7 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null
 
 ## 根据id获取好友id列表
@@ -805,9 +750,7 @@ GET
 
 #### 成功
 
-- code: 200
-
-- message: “获取成功”
+- status: 200
 
 - data: friends(Array)
 
@@ -819,6 +762,5 @@ GET
 
 #### 不应出现的数据库错误
 
-- code: 404
-- message: "不应出现的数据库错误"
+- status: 404
 - data: null

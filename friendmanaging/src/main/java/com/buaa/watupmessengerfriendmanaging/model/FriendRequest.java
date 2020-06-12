@@ -15,6 +15,7 @@ public class FriendRequest {
     private String senderId;
     private String receiverId;
     private String remark;
+    private String senderAvatarUrl;
     private LocalDateTime createdDate;
 
     public String getSenderId() {
@@ -55,5 +56,13 @@ public class FriendRequest {
 
     public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
+    }
+
+    public String getSenderAvatarUrl() {
+        return senderAvatarUrl;
+    }
+
+    public void setSenderAvatarUrl(String senderAvatarUrl) {
+        this.senderAvatarUrl = senderAvatarUrl;
     }
 }

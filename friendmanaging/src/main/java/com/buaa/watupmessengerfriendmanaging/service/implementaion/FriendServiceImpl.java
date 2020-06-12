@@ -299,7 +299,7 @@ public class FriendServiceImpl implements FriendService {
         if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
-        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark);
+        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,friend.getAvatarUrl());
         friendRequestRepository.save(friendRequest);
         return ResponseEntityFactory
                 .getInstance()
