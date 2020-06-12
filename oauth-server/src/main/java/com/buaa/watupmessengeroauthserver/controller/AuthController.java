@@ -141,7 +141,7 @@ public class AuthController {
             codeRepository.delete(dbCode);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
-        String subject = "WatupMessemger用户注册";
+        String subject = "WatupMessenger用户注册";
         String emailTemplate = "registerTemplate";
         String code = uuidUtil.randomCode();
         Map<String, Object> dataMap = new HashMap<>();
