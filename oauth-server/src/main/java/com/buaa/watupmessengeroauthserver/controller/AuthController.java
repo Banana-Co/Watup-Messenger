@@ -12,6 +12,7 @@ import com.buaa.watupmessengeroauthserver.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
@@ -33,6 +34,9 @@ import java.util.*;
 public class AuthController {
 
     Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+    @Value("${server.port}")
+    private String severPort;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -90,7 +94,7 @@ public class AuthController {
 
         ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
         //设置请求认证授权的服务器的地址
-        details.setAccessTokenUri("http://localhost:8081/oauth/token");
+        details.setAccessTokenUri("http://localhost:"+severPort+"/oauth/token");
         //下面都是认证信息：所拥有的权限，认证的客户端，具体的用户
         details.setScope(Arrays.asList("all"));
         details.setClientId("watup");

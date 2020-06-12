@@ -1,6 +1,9 @@
 package com.buaa.watupmessengeroauthserver.config;
 
+import com.buaa.watupmessengeroauthserver.controller.AuthController;
 import com.buaa.watupmessengeroauthserver.sercurity.CustomUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +24,16 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+
     @Autowired
     public RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public TokenStore tokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+        RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
+        logger.info("redisTokenStore", redisTokenStore);
+        return redisTokenStore;
     }
 
     @Bean
