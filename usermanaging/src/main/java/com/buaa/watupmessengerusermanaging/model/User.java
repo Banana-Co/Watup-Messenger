@@ -2,25 +2,27 @@ package com.buaa.watupmessengerusermanaging.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-@Document(collection = "users")
+@Document(collection = "user")
 public class User {
     @Id
     String id;
 
     private String username;
     private String password;
-
     private String email;
-
     private String avatarUrl;
+    private String sign;
+    private String area;
+
+
+
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
@@ -37,6 +39,25 @@ public class User {
         this.password = password;
         this.email = email;
         this.createdDate = LocalDateTime.now();
+        this.setAvatarUrl("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
+        this.setArea("China");
+        this.setSign("Hello, world");
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getAvatarUrl() {
