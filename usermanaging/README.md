@@ -25,7 +25,7 @@ POST
 
 | 字段     | 类型   | 描述     |
 | :------- | ------ | -------- |
-| id       | String | 用户标识 |
+| access_token       | String | 用户标识 |
 | username | String | 昵称     |
 
 ### 返回值
@@ -59,7 +59,7 @@ POST
 
 | 字段 | 类型         | 描述     |
 | :--- | ------------ | -------- |
-| id   | String       | 用户标识 |
+| access_token   | String       | 用户标识 |
 | file | MutipartFile | 头像图片 |
 
 ### 返回值
@@ -90,7 +90,7 @@ POST
 
 | 字段        | 类型   | 描述     |
 | :---------- | ------ | -------- |
-| id          | String | 用户标识 |
+| access_token          | String | 用户标识 |
 | oldPassword | String | 旧密码   |
 | newPassword | String | 新密码   |
 
@@ -122,7 +122,7 @@ POST
 
 | 字段 | 类型   | 描述     |
 | :--- | ------ | -------- |
-| id   | String | 用户标识 |
+| access_token   | String | 用户标识 |
 | sign | String | 签名     |
 
 ### 返回值
@@ -153,7 +153,7 @@ POST
 
 | 字段 | 类型   | 描述     |
 | :--- | ------ | -------- |
-| id   | String | 用户标识 |
+| access_token   | String | 用户标识 |
 | area | String | 地区     |
 
 ### 返回值
@@ -169,6 +169,7 @@ POST
 - code: 400
 - message: “修改地区失败”
 - data: null
+<<<<<<< HEAD
 
 ## 上传图片
 
