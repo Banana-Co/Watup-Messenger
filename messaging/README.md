@@ -7,7 +7,7 @@
 ### 建立连接
 
 ```javascript
-var ws = new WebSocket("ws://server-address/ws?token=<token>")
+var ws = new WebSocket("ws://server-address/ws?access_token=<token>")
 ```
 
 ### 连接成功回调函数

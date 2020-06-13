@@ -17,6 +17,8 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String sign;
+    private String area;
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
@@ -92,5 +94,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

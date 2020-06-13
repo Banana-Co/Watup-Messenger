@@ -10,6 +10,9 @@ public class Friend {
     private String username;
     private String nickname;
     private String avatarUrl;
+    private String email;
+    private String sign;
+    private String area;
     private LocalDateTime createdDate;
 
     public String getId() {
@@ -50,5 +53,29 @@ public class Friend {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

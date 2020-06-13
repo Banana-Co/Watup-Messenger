@@ -1,17 +1,17 @@
 package com.buaa.watupmessengerfriendmanaging.service.implementaion;
 
-import com.buaa.watupmessengerfriendmanaging.model.Friend;
-import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
-import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.exception.ConflictException;
 import com.buaa.watupmessengerfriendmanaging.exception.ForbiddenException;
 import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
+import com.buaa.watupmessengerfriendmanaging.model.Friend;
+import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
+import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.model.factory.FriendRequestFactory;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
-import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.FriendService;
-import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.FriendRequestRepository;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,36 @@ public class FriendServiceImpl implements FriendService {
     private UserRepository userRepository;
     @Autowired
     private FriendRequestRepository friendRequestRepository;
+
     @Override
-    public ResponseEntity<Object> getFriend(String id, String username) {
+    public ResponseEntity<Object> getFriendById(String id, String friendId) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        Map<String, String> friends = user
+                .get()
+                .getFriends();
+        if (friends == null||!friends.containsKey(friendId)) {
+            return ResponseEntityFactory
+                    .getInstance()
+                    .produceNotFound("未找到好友");
+        }
+        Optional<User> friend=userService.getUserById(friendId);
+        if (friend.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        Friend data=friendByUser(friend.get());
+        if (friends.get(friendId)!=null){
+            data.setNickname(friends.get(friendId));
+        }
+        return ResponseEntityFactory
+                .getInstance()
+                .produceSuccess(data);
+    }
+
+    @Override
+    public ResponseEntity<Object> getFriendByUsername(String id, String username) {
         Optional<User> user = userService.getUserById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException();
@@ -50,7 +78,7 @@ public class FriendServiceImpl implements FriendService {
                 .map(u -> friendByUser(userService
                                 .getUserById(u)
                                 .orElse(new User())
-                        ,friends.get(u)))
+                        , friends.get(u)))
                 .filter(u -> u
                         .getUsername()
                         .contains(username))
@@ -97,7 +125,7 @@ public class FriendServiceImpl implements FriendService {
                 .map(u -> friendByUser(userService
                                 .getUserById(u)
                                 .orElse(new User())
-                        ,friends.get(u)))
+                        , friends.get(u)))
                 .collect(Collectors.toList());
         return ResponseEntityFactory
                 .getInstance()
@@ -160,8 +188,8 @@ public class FriendServiceImpl implements FriendService {
         List<Friend> data = blocks
                 .stream()
                 .map(u -> friendByUser(userService
-                                .getUserById(u)
-                                .orElse(new User())))
+                        .getUserById(u)
+                        .orElse(new User())))
                 .collect(Collectors.toList());
         return ResponseEntityFactory
                 .getInstance()
@@ -253,7 +281,7 @@ public class FriendServiceImpl implements FriendService {
         if (userOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
-        List<FriendRequest> friendRequests=friendRequestRepository.getByReceiverId(id);
+        List<FriendRequest> friendRequests = friendRequestRepository.getByReceiverId(id);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess(friendRequests);
@@ -271,7 +299,7 @@ public class FriendServiceImpl implements FriendService {
         if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
-        FriendRequest friendRequest=FriendRequestFactory.produce(userId,friendId,remark);
+        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,friend.getAvatarUrl());
         friendRequestRepository.save(friendRequest);
         return ResponseEntityFactory
                 .getInstance()
@@ -285,7 +313,7 @@ public class FriendServiceImpl implements FriendService {
             throw new UserNotFoundException();
         }
         User user = userOptional.get();
-        Optional<FriendRequest> friendRequest=friendRequestRepository.getById(id);
+        Optional<FriendRequest> friendRequest = friendRequestRepository.getById(id);
         if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
@@ -294,7 +322,7 @@ public class FriendServiceImpl implements FriendService {
         if (friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
-        User friend=friendOptional.get();
+        User friend = friendOptional.get();
         if (addFriend(user, friend.getId()) || addFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
@@ -306,7 +334,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public ResponseEntity<Object> rejectFriendRequest(String id) {
-        Optional<FriendRequest> friendRequest=friendRequestRepository.getById(id);
+        Optional<FriendRequest> friendRequest = friendRequestRepository.getById(id);
         if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
@@ -334,6 +362,17 @@ public class FriendServiceImpl implements FriendService {
                 .produceSuccess();
     }
 
+    @Override
+    public Friend friendByUser(User user, String nickname) {
+        Friend friend = friendByUser(user);
+        friend.setNickname(nickname);
+        return friend;
+    }
+
+    @Override
+    public Friend friendByUser(User user) {
+        return produceFriend(user);
+    }
     //用于测试而初始化昵称
     private boolean addFriend(User user, String id, String username) {
         if (user.getFriends() == null) {
@@ -368,27 +407,21 @@ public class FriendServiceImpl implements FriendService {
         userRepository.save(user);
         return false;
     }
-    private Friend friendByUser(User user,String nickname){
-        if (user.getId()==null){
+
+    private Friend produceFriend(User user) {
+        if (user.getId() == null) {
             throw new UserNotFoundException();
         }
-        Friend friend=new Friend();
-        friend.setId(user.getId());
-        friend.setUsername(user.getUsername());
-        friend.setNickname(nickname);
-        friend.setAvatarUrl(user.getAvatarUrl());
-        friend.setCreatedDate(user.getCreatedDate());
-        return friend;
-    }
-    private Friend friendByUser(User user){
-        if (user.getId()==null){
-            throw new UserNotFoundException();
-        }
-        Friend friend=new Friend();
+        Friend friend = new Friend();
         friend.setId(user.getId());
         friend.setUsername(user.getUsername());
         friend.setAvatarUrl(user.getAvatarUrl());
         friend.setCreatedDate(user.getCreatedDate());
+        friend.setArea(user.getArea());
+        friend.setEmail(user.getEmail());
+        friend.setSign(user.getSign());
         return friend;
     }
+
+
 }

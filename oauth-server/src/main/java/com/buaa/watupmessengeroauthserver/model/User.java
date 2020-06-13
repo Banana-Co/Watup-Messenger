@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Document(collection = "user")
-@Component
 public class User implements UserDetails{
 
     @Override
@@ -49,8 +48,9 @@ public class User implements UserDetails{
     private String password;
 
     private String email;
-
     private String avatarUrl;
+    private String sign;
+    private String area;
     private LocalDateTime createdDate;
     private Map<String, String> friends;
     private List<String> blocks;
@@ -61,12 +61,31 @@ public class User implements UserDetails{
 
     }
 
+
     public User(String id, String username, String password, String email) {
         this.id =  id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.sign = "Hello, world";
+        this.area = "China";
         this.createdDate = LocalDateTime.now();
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getAvatarUrl() {
