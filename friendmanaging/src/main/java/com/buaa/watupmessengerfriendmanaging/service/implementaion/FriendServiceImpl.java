@@ -417,6 +417,9 @@ public class FriendServiceImpl implements FriendService {
         friend.setUsername(user.getUsername());
         friend.setAvatarUrl(user.getAvatarUrl());
         friend.setCreatedDate(user.getCreatedDate());
+        friend.setArea(user.getArea());
+        friend.setEmail(user.getEmail());
+        friend.setSign(user.getSign());
         return friend;
     }
 
