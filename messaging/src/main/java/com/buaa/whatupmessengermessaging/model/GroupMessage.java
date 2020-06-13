@@ -1,11 +1,17 @@
 package com.buaa.whatupmessengermessaging.model;
 
+import com.bol.secure.Encrypted;
+
 import java.time.LocalDateTime;
 
 public class GroupMessage {
     private String type;
+    @Encrypted
     private String senderId;
+    @Encrypted
     private String groupId;
+    private String receiverId;
+    @Encrypted
     private String content;
     private LocalDateTime timestamp;
 
@@ -30,6 +36,14 @@ public class GroupMessage {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getContent() {

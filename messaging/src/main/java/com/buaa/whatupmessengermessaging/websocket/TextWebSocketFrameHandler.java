@@ -72,45 +72,59 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
         String receiverId = message.getReceiverId();
         String senderId = MessagingSession.getId(ctx);
-
-        if (receiverId == null || !friendService.isFriend(senderId, receiverId) || friendService.isBlock(receiverId, senderId))
-            return;
-
-        Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
         message.setSenderId(senderId);
 
-        if (outCtx.isPresent()) {
-            TextWebSocketFrame outMsg = new TextWebSocketFrame(mapper.writeValueAsString(message));
-            outCtx.get().writeAndFlush(outMsg);
-            ctx.writeAndFlush(outMsg);
+        System.out.println(String.format("%s: incoming unicast message. from: %s, to: %s", LocalDateTime.now().toString(), senderId, receiverId));
+
+        if (receiverId == null || !friendService.isFriend(senderId, receiverId) || friendService.isBlock(receiverId, senderId)) {
+            System.out.println("no such user, or not friend, or blocked, drop");
+            return;
+        }
+
+        Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
+
+        if (outCtx.isPresent() && outCtx.get().channel().isActive()) {
+            outCtx.get().writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(message)));
+            ctx.writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(message)));
+            System.out.println(receiverId + " online, written to " + outCtx.get());
         } else {
-            messagingService.saveMessage(receiverId, message);
+            messagingService.saveMessage(message);
+            ctx.writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(message)));
+            System.out.println(receiverId + " not online, saved to db");
         }
     }
 
     private void handleMulticast(GroupMessage message, ChannelHandlerContext ctx) throws JsonProcessingException {
         message.setTimestamp(LocalDateTime.now());
-
+        String senderId = MessagingSession.getId(ctx);
+        message.setSenderId(senderId);
         String groupId = message.getGroupId();
 
-        if (groupId == null)
+        System.out.println(String.format("%s: incoming multicast message. from: %s, to: %s", LocalDateTime.now().toString(), senderId, groupId));
+
+        if (groupId == null) {
+            System.out.println("group not specified, drop");
             return;
+        }
 
         Group group = groupService.getGroupById(groupId);
-        String senderId = MessagingSession.getId(ctx);
-        if (group == null || !group.getUsersId().contains(senderId))
+        if (group == null || !group.getUsersId().contains(senderId)) {
+            System.out.println("group not accessible, drop");
             return;
+        }
 
-        message.setSenderId(senderId);
         List<String> usersId = group.getUsersId();
         for (String userId : usersId) {
             Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(userId);
 
-            if (outCtx.isPresent()) {
-                TextWebSocketFrame outMsg = new TextWebSocketFrame(mapper.writeValueAsString(message));
-                outCtx.get().writeAndFlush(outMsg);
+            message.setReceiverId(userId);
+
+            if (outCtx.isPresent() && outCtx.get().channel().isActive()) {
+                outCtx.get().writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(message)));
+                System.out.println(userId + " online, written to " + outCtx.get());
             } else {
-                messagingService.saveGroupMessage(userId, message);
+                messagingService.saveGroupMessage(message);
+                System.out.println(userId + " not online, saved to db");
             }
         }
     }
@@ -118,37 +132,41 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
-           WebSocketServerProtocolHandler.HandshakeComplete handshake = (WebSocketServerProtocolHandler.HandshakeComplete)evt;
+           try {
+               System.out.println(String.format("%s: [HANDSHAKE COMPLETE] connection established with %s, now performing authorization", LocalDateTime.now().toString(), ctx.toString()));
+               WebSocketServerProtocolHandler.HandshakeComplete handshake = (WebSocketServerProtocolHandler.HandshakeComplete) evt;
 
-           String uri = handshake.requestUri();
-           QueryStringDecoder decoder = new QueryStringDecoder(uri);
-           Map<String, List<String>> params = decoder.parameters();
+               String uri = handshake.requestUri();
+               QueryStringDecoder decoder = new QueryStringDecoder(uri);
+               Map<String, List<String>> params = decoder.parameters();
 
-           if (params.containsKey("access_token")) {
+               if (!params.containsKey("access_token"))
+                   throw new RuntimeException("no access token");
+
                String token = params.get("access_token").get(0);
 
                CheckTokenResult result = authServer.checkToken(token);
-               String id = result.getId();
 
-               if (id != null) {
+               if (result != null && result.getId() != null) {
                    ctx.pipeline().remove(HTTPRequestHandler.class);
-
-                   MessagingSession.addSession(token, id, ctx);
+                   MessagingSession.addSession(result.getId(), ctx);
+                   System.out.println(String.format("%s: [ESTABLISHED] connection established with %s(%s)", LocalDateTime.now().toString(), result.getId(), ctx.toString()));
                } else {
-                   ctx.channel().close();
+                   throw new RuntimeException("auth failed");
                }
-           } else {
+
+           } catch (Exception e) {
                ctx.channel().close();
+               System.out.println(String.format("%s: [REMOVED] connection with %s closed due to some error: %s", LocalDateTime.now().toString(), ctx.toString(), e.getMessage()));
            }
 
        } else {
-           System.out.println(evt.getClass());
            super.userEventTriggered(ctx, evt);
        }
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         MessagingSession.removeSession(ctx);
     }
 }

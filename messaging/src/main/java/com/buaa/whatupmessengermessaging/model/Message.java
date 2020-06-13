@@ -1,5 +1,6 @@
 package com.buaa.whatupmessengermessaging.model;
 
+import com.bol.secure.Encrypted;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
@@ -7,8 +8,10 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
     private String type;
+    @Encrypted
     private String senderId;
     private String receiverId;
+    @Encrypted
     private String content;
     private LocalDateTime timestamp = null;
 
@@ -55,7 +58,8 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "type='" + type + '\'' +
-                ", id='" + senderId + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", receiverId='" + receiverId + '\'' +
                 ", content='" + content + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
