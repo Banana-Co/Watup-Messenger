@@ -85,8 +85,9 @@ ws.onclose = function(event) {
 * 参数
   
   * access_token
-* sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
+  * sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
   * drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
+  * type: 字符串，all（默认）拉取所有信息，unicast 私聊，multicast 群聊
   
 * 返回值
 
@@ -98,30 +99,6 @@ ws.onclose = function(event) {
 * 状态码
   * 200：成功
   * 400：请求错误
-
-### 获取离线群聊消息
-
-- uri：/api/groupmessage
-
-- 请求方法：GET
-
-- 参数
-  
-  - access_token
-- sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
-  - drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
-  
-- 返回值
-
-  数组，数组中每个成员的字段如下：
-
-  - id：群组 id
-  - messages：该 id 群组的所有消息，格式与 WebSocket 接收的群聊消息格式相同
-
-- 状态码
-  - 200：成功
-  - 400：请求错误
-
 
 
 
