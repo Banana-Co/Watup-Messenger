@@ -83,10 +83,12 @@ public class MessageController {
             @RequestParam(name = "to", required = false) String to,
             @RequestBody Notification msg) {
 
-        switch (type) {
+        switch (type.toLowerCase()) {
             case "unicast":
-                if (to != null)
+                if (to != null) {
+                    System.out.println(msg);
                     messagingService.sendNotification(from, to, msg);
+                }
                 else
                     throw new BadRequestException("You are sending a unicast notification, please specify receiver's id as parameter \"to\".");
                 break;

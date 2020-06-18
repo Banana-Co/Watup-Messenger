@@ -8,6 +8,7 @@ import com.buaa.whatupmessengermessaging.service.MessagingService;
 import com.buaa.whatupmessengermessaging.websocket.MessagingSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -93,7 +94,7 @@ public class MessagingServiceImpl implements MessagingService {
 
     @Override
     public void sendNotification(String from, String to, Notification msg) {
-        if (!friendService.isBlock(from, to)) {
+        if (from == null || !friendService.isBlock(from, to)) {
             sendOneNotification(to, msg);
         }
     }
@@ -104,7 +105,7 @@ public class MessagingServiceImpl implements MessagingService {
 
         if (group.isPresent()) {
             for (String receiverId : group.get().getUsersId()) {
-                if (!friendService.isBlock(from, receiverId)) {
+                if (from == null || !friendService.isBlock(from, receiverId)) {
                     sendOneNotification(receiverId, msg);
                 }
             }
@@ -125,11 +126,16 @@ public class MessagingServiceImpl implements MessagingService {
     private void sendOneNotification(String receiverId, Notification msg) {
         try {
             msg.setType("NOTIFICATION");
+            System.out.println(msg);
             Optional<ChannelHandlerContext> ctx = MessagingSession.getChannelHandlerContext(receiverId);
+            System.out.println(ctx.isPresent());;
+            ctx.ifPresent(System.out::println);
+            System.out.println(msg);
             if (ctx.isPresent() && ctx.get().channel().isActive()) {
-                ctx.get().writeAndFlush(mapper.writeValueAsString(msg));
+                ctx.get().writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(msg)));
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

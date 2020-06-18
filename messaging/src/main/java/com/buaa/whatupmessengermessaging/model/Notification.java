@@ -39,4 +39,13 @@ public class Notification {
     public void setContent(Object content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "type='" + type + '\'' +
+                ", notificationType='" + notificationType + '\'' +
+                ", content=" + content +
+                '}';
+    }
 }

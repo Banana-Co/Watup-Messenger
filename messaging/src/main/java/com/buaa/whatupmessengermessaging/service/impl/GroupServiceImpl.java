@@ -148,7 +148,7 @@ public class GroupServiceImpl implements GroupService {
             _removeRequest(groupRequest.getId());
 
             Notification notification = new Notification("GROUP_REQUEST_ACCEPTED", userId);
-            messageController.sendNotification("MULTICAST", userId, groupRequest.getUserId(), notification);
+            messageController.sendNotification("UNICAST", userId, groupRequest.getInvitedBy(), notification);
         }
     }
 
