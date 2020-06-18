@@ -2,6 +2,7 @@ package com.buaa.whatupmessengermessaging.service;
 
 import com.buaa.whatupmessengermessaging.model.GroupMessage;
 import com.buaa.whatupmessengermessaging.model.Message;
+import com.buaa.whatupmessengermessaging.model.Notification;
 import com.buaa.whatupmessengermessaging.model.Tuple;
 
 import java.util.List;
@@ -21,8 +22,8 @@ interface MessagingService {
     void saveMessage(Message message);
     void saveGroupMessage(GroupMessage message);
 
-    void sendNotification(String receiverId, Object msg);
-    void sendGroupNotification(String groupId, Object msg);
+    void sendNotification(String from, String to, Notification msg);
+    void sendGroupNotification(String from, String to, Notification msg);
 
-    void sendAllNotification(String userId, Object msg);
+    void sendAllNotification(String from, Notification msg);
 }

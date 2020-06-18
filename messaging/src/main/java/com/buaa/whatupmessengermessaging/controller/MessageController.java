@@ -3,6 +3,7 @@ package com.buaa.whatupmessengermessaging.controller;
 import com.buaa.whatupmessengermessaging.exception.BadRequestException;
 import com.buaa.whatupmessengermessaging.model.GroupMessage;
 import com.buaa.whatupmessengermessaging.model.Message;
+import com.buaa.whatupmessengermessaging.model.Notification;
 import com.buaa.whatupmessengermessaging.model.Tuple;
 import com.buaa.whatupmessengermessaging.service.FriendService;
 import com.buaa.whatupmessengermessaging.service.MessagingService;
@@ -77,26 +78,29 @@ public class MessageController {
 
     @RequestMapping(value = "/notification", method = POST)
     public void sendNotification(
-            @RequestParam(name = "from", defaultValue = "unicast", required = false) String from,
             @RequestParam(name = "type", defaultValue = "unicast") String type,
+            @RequestParam(name = "from", required = false) String from,
             @RequestParam(name = "to", required = false) String to,
-            @RequestBody Object msg) {
+            @RequestBody Notification msg) {
 
         switch (type) {
             case "unicast":
                 if (to != null)
-                    messagingService.sendNotification(to, msg);
+                    messagingService.sendNotification(from, to, msg);
                 else
-                    throw new BadRequestException("You are sending a unicast notification, please specify receiver's id as parameter \"id\".");
+                    throw new BadRequestException("You are sending a unicast notification, please specify receiver's id as parameter \"to\".");
                 break;
             case "multicast":
                 if (to != null)
-                    messagingService.sendGroupNotification(to, msg);
+                    messagingService.sendGroupNotification(from, to, msg);
                 else
-                    throw new BadRequestException("You are sending a multicast notification, please specify group's id as parameter \"id\".");
+                    throw new BadRequestException("You are sending a multicast notification, please specify group's id as parameter \"to\".");
                 break;
             case "broadcast":
-                messagingService.sendAllNotification(from, msg);
+                if (from != null)
+                    messagingService.sendAllNotification(from, msg);
+                else
+                    throw new BadRequestException("You are sending a broadcast notification, please specify senders's id as parameter \"to\".");
                 break;
         }
     }

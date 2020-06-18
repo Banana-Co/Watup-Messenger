@@ -1,14 +1,12 @@
 package com.buaa.whatupmessengermessaging.service.impl;
 
 import com.buaa.whatupmessengermessaging.exception.ForbiddenException;
-import com.buaa.whatupmessengermessaging.model.Group;
-import com.buaa.whatupmessengermessaging.model.GroupMessage;
-import com.buaa.whatupmessengermessaging.model.Message;
-import com.buaa.whatupmessengermessaging.model.Tuple;
+import com.buaa.whatupmessengermessaging.model.*;
 import com.buaa.whatupmessengermessaging.service.FriendService;
 import com.buaa.whatupmessengermessaging.service.GroupService;
 import com.buaa.whatupmessengermessaging.service.MessagingService;
 import com.buaa.whatupmessengermessaging.websocket.MessagingSession;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -32,23 +30,11 @@ public class MessagingServiceImpl implements MessagingService {
     FriendService friendService;
     @Autowired
     GroupService groupService;
+    @Autowired
+    ObjectMapper mapper;
 
     @Override
     public Map<Tuple, List<Message>> getMessagesAsc(String receiverId) {
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                Aggregation.match(Criteria.where("_id").is(receiverId)),
-//                Aggregation.unwind("messages"),
-//                Aggregation.project()
-//                        .and("messages.type").as("type")
-//                        .and("messages.senderId").as("senderId")
-//                        .and("messages.receiverId").as("receiverId")
-//                        .and("messages.content").as("content")
-//                        .and("messages.timestamp").as("timestamp"),
-//                Aggregation.sort(Sort.Direction.ASC, "timestamp"),
-//                Aggregation.group("senderId")
-//                        .last("senderId").as("senderId")
-//                        .push("$$ROOT").as("messages"));
-//        AggregationResults<SavedMessage> results = mongoTemplate.aggregate(aggregation, "messages", SavedMessage.class);
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         List<Message> messages = mongoTemplate.find(Query.query(criteria), Message.class, "messages");
         return messages.parallelStream()
@@ -58,21 +44,6 @@ public class MessagingServiceImpl implements MessagingService {
 
     @Override
     public Map<Tuple, List<Message>> getMessagesDesc(String receiverId) {
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                Aggregation.match(Criteria.where("_id").is(receiverId)),
-//                Aggregation.unwind("messages"),
-//                Aggregation.project()
-//                        .and("messages.type").as("type")
-//                        .and("messages.senderId").as("senderId")
-//                        .and("messages.receiverId").as("receiverId")
-//                        .and("messages.content").as("content")
-//                        .and("messages.timestamp").as("timestamp"),
-//                Aggregation.sort(Sort.Direction.DESC, "timestamp"),
-//                Aggregation.group("senderId")
-//                        .last("senderId").as("senderId")
-//                        .push("$$ROOT").as("messages"));
-//        AggregationResults<SavedMessage> results = mongoTemplate.aggregate(aggregation, "messages", SavedMessage.class);
-//        return results.getMappedResults();
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         List<Message> messages = mongoTemplate.find(Query.query(criteria), Message.class, "messages");
         return messages.parallelStream()
@@ -82,21 +53,6 @@ public class MessagingServiceImpl implements MessagingService {
 
     @Override
     public Map<Tuple, List<GroupMessage>> getGroupMessagesAsc(String receiverId) {
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                Aggregation.match(Criteria.where("_id").is(receiverId)),
-//                Aggregation.unwind("messages"),
-//                Aggregation.project()
-//                        .and("messages.type").as("type")
-//                        .and("messages.senderId").as("senderId")
-//                        .and("messages.groupId").as("groupId")
-//                        .and("messages.content").as("content")
-//                        .and("messages.timestamp").as("timestamp"),
-//                Aggregation.sort(Sort.Direction.ASC, "timestamp"),
-//                Aggregation.group("groupId")
-//                        .last("groupId").as("groupId")
-//                        .push("$$ROOT").as("messages"));
-//        AggregationResults<SavedGroupMessage> results = mongoTemplate.aggregate(aggregation, "groupmessages", SavedGroupMessage.class);
-//        return results.getMappedResults();
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         List<GroupMessage> messages = mongoTemplate.find(Query.query(criteria), GroupMessage.class, "groupmessages");
         return messages.parallelStream()
@@ -106,21 +62,6 @@ public class MessagingServiceImpl implements MessagingService {
 
     @Override
     public Map<Tuple, List<GroupMessage>> getGroupMessagesDesc(String receiverId) {
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                Aggregation.match(Criteria.where("_id").is(receiverId)),
-//                Aggregation.unwind("messages"),
-//                Aggregation.project()
-//                        .and("messages.type").as("type")
-//                        .and("messages.senderId").as("senderId")
-//                        .and("messages.groupId").as("groupId")
-//                        .and("messages.content").as("content")
-//                        .and("messages.timestamp").as("timestamp"),
-//                Aggregation.sort(Sort.Direction.DESC, "timestamp"),
-//                Aggregation.group("groupId")
-//                        .last("groupId").as("groupId")
-//                        .push("$$ROOT").as("messages"));
-//        AggregationResults<SavedGroupMessage> results = mongoTemplate.aggregate(aggregation, "groupmessages", SavedGroupMessage.class);
-//        return results.getMappedResults();
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         List<GroupMessage> messages = mongoTemplate.find(Query.query(criteria), GroupMessage.class, "groupmessages");
         return messages.parallelStream()
@@ -130,60 +71,42 @@ public class MessagingServiceImpl implements MessagingService {
 
     @Override
     public void dropMessages(String receiverId) {
-//        Criteria criteria = Criteria.where("_id").is(receiverId);
-//        mongoTemplate.remove(Query.query(criteria), "messages");
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         mongoTemplate.remove(Query.query(criteria), "messages");
     }
 
     @Override
     public void dropGroupMessages(String receiverId) {
-//        Criteria criteria = Criteria.where("_id").is(receiverId);
-//        mongoTemplate.remove(Query.query(criteria), "groupmessages");
         Criteria criteria = Criteria.where("receiverId").is(receiverId);
         mongoTemplate.remove(Query.query(criteria), "groupmessages");
     }
 
     @Override
     public void saveMessage(Message message) {
-//        Criteria criteria = Criteria.where("_id").is(receiverId);
-//        Update update = new Update().push("messages", message);
-//        UpdateResult updateResult = mongoTemplate.updateFirst(Query.query(criteria), update, SavedMessage.class, "messages");
-//
-//        if (updateResult.getModifiedCount() == 0) {
-//            List<Message> messages = new ArrayList<>();
-//            messages.add(message);
-//            mongoTemplate.save(new SavedMessage(receiverId, messages), "messages");
-//        }
         mongoTemplate.save(message, "messages");
     }
 
     @Override
     public void saveGroupMessage(GroupMessage message) {
-//        Criteria criteria = Criteria.where("_id").is(receiverId);
-//        Update update = new Update().push("messages", message);
-//        UpdateResult updateResult = mongoTemplate.updateFirst(Query.query(criteria), update, SavedGroupMessage.class, "groupmessages");
-//
-//        if (updateResult.getModifiedCount() == 0) {
-//            List<GroupMessage> messages = new ArrayList<>();
-//            messages.add(message);
-//            mongoTemplate.save(new SavedGroupMessage(receiverId, messages), "groupmessages");
-//        }
         mongoTemplate.save(message, "groupmessages");
     }
 
     @Override
-    public void sendNotification(String receiverId, Object msg) {
-        sendOneNotification(receiverId, msg);
+    public void sendNotification(String from, String to, Notification msg) {
+        if (!friendService.isBlock(from, to)) {
+            sendOneNotification(to, msg);
+        }
     }
 
     @Override
-    public void sendGroupNotification(String groupId, Object msg) {
-        Optional<Group> group = groupService.getGroup(groupId);
+    public void sendGroupNotification(String from, String to, Notification msg) {
+        Optional<Group> group = groupService.getGroup(to);
 
         if (group.isPresent()) {
             for (String receiverId : group.get().getUsersId()) {
-                sendOneNotification(receiverId, msg);
+                if (!friendService.isBlock(from, receiverId)) {
+                    sendOneNotification(receiverId, msg);
+                }
             }
         } else {
             throw new ForbiddenException("No such group, or you don't have access to the group.");
@@ -191,15 +114,22 @@ public class MessagingServiceImpl implements MessagingService {
     }
 
     @Override
-    public void sendAllNotification(String userId, Object msg) {
-        List<String> friends = friendService.getFriendsSimple(userId);
+    public void sendAllNotification(String from, Notification msg) {
+        List<String> friends = friendService.getFriendsSimple(from);
         for (String receiverId : friends) {
-            sendOneNotification(receiverId, msg);
+            if (!friendService.isBlock(from, receiverId))
+                sendOneNotification(receiverId, msg);
         }
     }
 
-    private void sendOneNotification(String receiverId, Object msg) {
-        Optional<ChannelHandlerContext> ctx = MessagingSession.getChannelHandlerContext(receiverId);
-        ctx.ifPresent(channelHandlerContext -> channelHandlerContext.writeAndFlush(msg));
+    private void sendOneNotification(String receiverId, Notification msg) {
+        try {
+            msg.setType("NOTIFICATION");
+            Optional<ChannelHandlerContext> ctx = MessagingSession.getChannelHandlerContext(receiverId);
+            if (ctx.isPresent() && ctx.get().channel().isActive()) {
+                ctx.get().writeAndFlush(mapper.writeValueAsString(msg));
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

@@ -11,9 +11,7 @@ import com.buaa.whatupmessengermessaging.service.MessagingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -39,15 +37,8 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     GroupService groupService;
     @Autowired
     AuthServer authServer;
-
-    public static ObjectMapper mapper = new ObjectMapper();
-    static {
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    }
-
-    public TextWebSocketFrameHandler() {
-    }
+    @Autowired
+    ObjectMapper mapper;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
@@ -131,6 +122,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        System.out.println(evt);
        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
            try {
                System.out.println(String.format("%s: [HANDSHAKE COMPLETE] connection established with %s, now performing authorization", LocalDateTime.now().toString(), ctx.toString()));

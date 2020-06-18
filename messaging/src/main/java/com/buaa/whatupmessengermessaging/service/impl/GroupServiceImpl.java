@@ -1,8 +1,10 @@
 package com.buaa.whatupmessengermessaging.service.impl;
 
+import com.buaa.whatupmessengermessaging.controller.MessageController;
 import com.buaa.whatupmessengermessaging.exception.ForbiddenException;
 import com.buaa.whatupmessengermessaging.model.Group;
 import com.buaa.whatupmessengermessaging.model.GroupRequest;
+import com.buaa.whatupmessengermessaging.model.Notification;
 import com.buaa.whatupmessengermessaging.model.UserGroup;
 import com.buaa.whatupmessengermessaging.service.GroupService;
 import com.mongodb.client.result.UpdateResult;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     MongoTemplate mongoTemplate;
+    @Autowired
+    MessageController messageController;
 
     @Override
     public String addGroup(String managerId, String name) {
@@ -42,8 +46,9 @@ public class GroupServiceImpl implements GroupService {
         if (group == null || !managerId.equals(group.getManagerId())) {
             throw new ForbiddenException("No such group, or you don't have access to change the group.");
         } else {
-            group.setName(name);
-            mongoTemplate.save(group);
+            Query query = Query.query(Criteria.where("_id").is(groupId));
+            Update update = Update.update("name", name);
+            mongoTemplate.updateFirst(query, update, "groups");
         }
     }
 
@@ -58,6 +63,11 @@ public class GroupServiceImpl implements GroupService {
             request.setGroupName(group.getName());
             request.setInvitedBy(invitedBy);
             mongoTemplate.save(request, "grouprequests");
+            Notification notification = new Notification(
+                    "GROUP_REQUEST",
+                    invitedBy
+            );
+            messageController.sendNotification("UNICAST", invitedBy, request.getUserId(), notification);
         }
     }
 
@@ -136,8 +146,10 @@ public class GroupServiceImpl implements GroupService {
             addToProfile(userId, groupRequest.getGroupId());
             addToGroup(userId, groupRequest.getGroupId());
             _removeRequest(groupRequest.getId());
-        }
 
+            Notification notification = new Notification("GROUP_REQUEST_ACCEPTED", userId);
+            messageController.sendNotification("MULTICAST", userId, groupRequest.getUserId(), notification);
+        }
     }
 
     @Override
@@ -169,6 +181,8 @@ public class GroupServiceImpl implements GroupService {
         } else {
             removeFromProfile(userId, groupId);
             removeFromGroup(userId, groupId);
+            Notification notification = new Notification("GROUP_REMOVED", groupId);
+            messageController.sendNotification("UNICAST", null, userId, notification);
         }
     }
 
@@ -179,8 +193,11 @@ public class GroupServiceImpl implements GroupService {
         if (group == null || !group.getManagerId().equals(managerId)) {
             throw new ForbiddenException("No such group, or you are not the manager of the group.");
         } else {
-            for (String userId : group.getUsersId())
+            for (String userId : group.getUsersId()) {
                 removeFromProfile(userId, groupId);
+            }
+            Notification notification = new Notification("GROUP_DISBANDED", groupId);
+            messageController.sendNotification("MULTICAST", null, groupId, notification);
             mongoTemplate.remove(Query.query(Criteria.where("_id").is(groupId)), "groups");
         }
     }

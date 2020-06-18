@@ -292,13 +292,14 @@ ws.onclose = function(event) {
 
 - 参数
 
-  - from：用户id，标明消息来自哪个用户；type 为 unicast 和 multicast 时可以不标明，表示来自系统的消息通知；type 为broadcast的时候一定要指定
+  - from：用户id，标明消息来自哪个用户；type 为 unicast 和 multicast 时可以不需要设置，设置来自哪个用户仅用于屏蔽；type 为broadcast的时候需要指定
   - type：unicast（默认）发送给一个用户，multicast 发送给某群组的所有用户， broadcast 发送给指定用户的所有好友
   - to：unicast 时为推送对象的 id，multicast 时为推送群组的 id，broadcast 时不需要指定
 
 - 请求体：
 
-  推送的消息，内容自定义
+  - notificationType：字符串，通知的类型，前后端自行协调定义
+  - content：通知的内容
 
 - 返回值
 
@@ -308,10 +309,13 @@ ws.onclose = function(event) {
 
   - 200：成功
   - 403：请求有误
+  
+- WebSocket 收到的消息格式：
+
+  - 与请求体相比多了一个 type，值为 NOTIFICATION，其他保持一致
 
 ##### 说明
 
 - 消息接口不对前端开放，应该整合进后端的业务逻辑
 - 指定消息来自哪个用户后，可以发送消息给还未成为好友的人，但屏蔽该用户的用户不会收到消息；不指定来自哪个用户时，所有目标用户都会收到消息
 - 如果目标用户不在线，消息直接被丢弃
-- 推送后，前端接收到的只有请求体部分的内容，不包含来自哪个用户等的信息，应在有关业务的前后端之间自行定义
