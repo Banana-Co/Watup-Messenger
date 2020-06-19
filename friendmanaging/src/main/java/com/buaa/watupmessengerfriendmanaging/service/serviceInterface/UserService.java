@@ -18,5 +18,5 @@ public interface UserService {
 
     void addUser(String id, String username);
 
-    ResponseEntity<?> getFriend(String id);
+    ResponseEntity<?> getFriend(String userId,String friendId);
 }

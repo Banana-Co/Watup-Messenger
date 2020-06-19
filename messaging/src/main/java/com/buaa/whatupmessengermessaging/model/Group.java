@@ -1,8 +1,11 @@
 package com.buaa.whatupmessengermessaging.model;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.List;
 
 public class Group {
+    @Id
     private String id;
     private String name;
     private String managerId;
@@ -44,5 +47,15 @@ public class Group {
 
     public void setUsersId(List<String> usersId) {
         this.usersId = usersId;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", managerId='" + managerId + '\'' +
+                ", usersId=" + usersId +
+                '}';
     }
 }

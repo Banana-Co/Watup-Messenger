@@ -85,8 +85,9 @@ ws.onclose = function(event) {
 * 参数
   
   * access_token
-* sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
+  * sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
   * drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
+  * type: 字符串，all（默认）拉取所有信息，unicast 私聊，multicast 群聊
   
 * 返回值
 
@@ -98,30 +99,6 @@ ws.onclose = function(event) {
 * 状态码
   * 200：成功
   * 400：请求错误
-
-### 获取离线群聊消息
-
-- uri：/api/groupmessage
-
-- 请求方法：GET
-
-- 参数
-  
-  - access_token
-- sort：字符串，asc（默认） 表示按时间增序，desc 表示按时间降序
-  - drop：布尔值，true（默认） 表示删除服务器上获取的消息，false 不删除
-  
-- 返回值
-
-  数组，数组中每个成员的字段如下：
-
-  - id：群组 id
-  - messages：该 id 群组的所有消息，格式与 WebSocket 接收的群聊消息格式相同
-
-- 状态码
-  - 200：成功
-  - 400：请求错误
-
 
 
 
@@ -315,13 +292,14 @@ ws.onclose = function(event) {
 
 - 参数
 
-  - from：用户id，标明消息来自哪个用户；type 为 unicast 和 multicast 时可以不标明，表示来自系统的消息通知；type 为broadcast的时候一定要指定
+  - from：用户id，标明消息来自哪个用户；type 为 unicast 和 multicast 时可以不需要设置，设置来自哪个用户仅用于屏蔽；type 为broadcast的时候需要指定
   - type：unicast（默认）发送给一个用户，multicast 发送给某群组的所有用户， broadcast 发送给指定用户的所有好友
   - to：unicast 时为推送对象的 id，multicast 时为推送群组的 id，broadcast 时不需要指定
 
 - 请求体：
 
-  推送的消息，内容自定义
+  - notificationType：字符串，通知的类型，前后端自行协调定义
+  - content：通知的内容
 
 - 返回值
 
@@ -331,10 +309,13 @@ ws.onclose = function(event) {
 
   - 200：成功
   - 403：请求有误
+  
+- WebSocket 收到的消息格式：
+
+  - 与请求体相比多了一个 type，值为 NOTIFICATION，其他保持一致
 
 ##### 说明
 
 - 消息接口不对前端开放，应该整合进后端的业务逻辑
 - 指定消息来自哪个用户后，可以发送消息给还未成为好友的人，但屏蔽该用户的用户不会收到消息；不指定来自哪个用户时，所有目标用户都会收到消息
 - 如果目标用户不在线，消息直接被丢弃
-- 推送后，前端接收到的只有请求体部分的内容，不包含来自哪个用户等的信息，应在有关业务的前后端之间自行定义
