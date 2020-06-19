@@ -9,9 +9,9 @@
 - 用户登录
 - 获取(刷新)token
 - 验证token
+- 注销token
 
 ### 未完成
- - 注销token 
 
 # auth-server接口说明
 
@@ -23,7 +23,7 @@
 
 ### 请求方法
 
-POS
+POST
 
 ### URI
 
@@ -311,3 +311,40 @@ POST
   "error_description": "Token was not recognised"
 
 }
+
+## 注销token
+
+### 接口描述
+
+注销token
+
+### 请求方法
+
+GET
+
+### URI
+
+/oauth/removeToken
+
+### 参数
+
+| 字段 | 类型   | 描述         |
+| :--- | ------ | ------------ |
+| access_token | String | 令牌 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+
+- message: “注销成功”
+
+- data: null
+
+
+#### 验证码依然有效
+
+- code: 400
+- message: "注销失败"
+- data: null
