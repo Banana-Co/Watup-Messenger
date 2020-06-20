@@ -58,10 +58,11 @@ public interface FriendService {
     /**
      * 拒绝指定id的好友申请
      *
+     * @param userId 用户id
      * @param id    申请id
      * @return 结果
      */
-    ResponseEntity<Object> rejectFriendRequest(String id);
+    ResponseEntity<Object> rejectFriendRequest(String userId, String id);
 
     /**
      * 根据用户id删除好友,自己也将从对方的好友列表中移除
