@@ -216,7 +216,7 @@ POST
 
 | 字段     | 类型   | 描述     |
 | :------- | ------ | -------- |
-| access_token       | String | 用户标识 |
+| groupId       | String | 群标识|
 | avatarUrls | List<String> | 用户头像[1, 9] |
 
 ### 返回值
