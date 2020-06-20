@@ -63,7 +63,7 @@ public class UserController {
         return ResultFactory.buildFailResult("昵称修改失败");
     }
 
-    @RequestMapping(value = "/user/getGroupAvatar", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/getGroupAvatar", method = RequestMethod.POST)
     public Result getGroupAvatar(@RequestBody List<String> avatarUrls,
                                  @RequestParam(name = "groupId") String groupId,
                                  HttpServletRequest req) {
@@ -72,15 +72,19 @@ public class UserController {
         List<String> paths = new ArrayList<>();
 
         for(String s : avatarUrls) {
-            int st = s.lastIndexOf("/");
+            int st = 0;
             int ed = s.length();
+            if(s.indexOf("/") != -1) {
+                st = s.lastIndexOf("/");
+                ed = s.length();
+            }
             paths.add(uploadFolder  + s.substring(st, ed));
         }
         try {
             String filePath = ImgUtil.getCombinationOfHead(paths , uploadFolder, groupId );
             String avatarUrl = baseUrl + staticAccessPath + filePath;
             MongoDatabase database = mongoTemplate.getDb();
-            MongoCollection<Document> collection = database.getCollection("test");
+            MongoCollection<Document> collection = database.getCollection("groups");
             collection.updateOne(Filters.eq("_id", new ObjectId(groupId)),
                     new Document("$set", new Document("groupAvatar", avatarUrl)));
             return ResultFactory.buildResult(ResultCode.SUCCESS, "群头像生成成功", avatarUrl);
