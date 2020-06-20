@@ -36,9 +36,23 @@ public class FriendServiceImpl implements FriendService {
     private FriendRequestRepository friendRequestRepository;
 
     enum notiType{
+        /**
+         *
+         */
         friendRequestAdd("friendRequestAdd"),
+        /**
+         *
+         */
         friendRequestPass("friendRequestPass"),
-        friendRequestReject("friendRequestReject");
+        /**
+         *
+         */
+        friendRequestReject("friendRequestReject"),
+
+        /**
+         *
+         */
+        friendRemoved("friendRemoved");
         String type;
 
         notiType(String type){
@@ -115,6 +129,11 @@ public class FriendServiceImpl implements FriendService {
         if (deleteFriend(user, friendId) || deleteFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
+        Notification notification = new Notification(
+                notiType.friendRemoved.type,
+                userId
+        );
+        messagingService.sendNotification("UNICAST", userId, friendId, notification);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess();

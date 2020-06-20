@@ -11,7 +11,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 /**
  * @author Cast
  */
-@FeignClient(value = "MESSAGING-SERVICE")
+@FeignClient(value = "messaging-service")
 public interface MessagingService {
     @RequestMapping(value = "/notification", method = POST)
     void sendNotification(
