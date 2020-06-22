@@ -65,7 +65,7 @@ public class FriendController {
     public ResponseEntity<Object> rejectFriendRequest(
             @RequestParam String id
             , @RequestParam String requestId) {
-        return friendService.rejectFriendRequest(requestId);
+        return friendService.rejectFriendRequest(id,requestId);
     }
 
     @RequestMapping(value = "friend", method = RequestMethod.DELETE)

@@ -5,12 +5,14 @@ import com.buaa.watupmessengerfriendmanaging.exception.ForbiddenException;
 import com.buaa.watupmessengerfriendmanaging.exception.UserNotFoundException;
 import com.buaa.watupmessengerfriendmanaging.model.Friend;
 import com.buaa.watupmessengerfriendmanaging.model.FriendRequest;
+import com.buaa.watupmessengerfriendmanaging.model.Notification;
 import com.buaa.watupmessengerfriendmanaging.model.User;
 import com.buaa.watupmessengerfriendmanaging.model.factory.FriendRequestFactory;
 import com.buaa.watupmessengerfriendmanaging.model.factory.ResponseEntityFactory;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.FriendRequestRepository;
 import com.buaa.watupmessengerfriendmanaging.service.mongo.repository.UserRepository;
 import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.FriendService;
+import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.MessagingService;
 import com.buaa.watupmessengerfriendmanaging.service.serviceInterface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,36 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     private UserService userService;
     @Autowired
+    private MessagingService messagingService;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private FriendRequestRepository friendRequestRepository;
+
+    enum notiType{
+        /**
+         *
+         */
+        friendRequestAdd("friendRequestAdd"),
+        /**
+         *
+         */
+        friendRequestPass("friendRequestPass"),
+        /**
+         *
+         */
+        friendRequestReject("friendRequestReject"),
+
+        /**
+         *
+         */
+        friendRemoved("friendRemoved");
+        String type;
+
+        notiType(String type){
+            this.type=type;
+        }
+    }
 
     @Override
     public ResponseEntity<Object> getFriendById(String id, String friendId) {
@@ -100,6 +129,11 @@ public class FriendServiceImpl implements FriendService {
         if (deleteFriend(user, friendId) || deleteFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
+        Notification notification = new Notification(
+                notiType.friendRemoved.type,
+                userId
+        );
+        messagingService.sendNotification("UNICAST", userId, friendId, notification);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess();
@@ -299,8 +333,13 @@ public class FriendServiceImpl implements FriendService {
         if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
-        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,friend.getAvatarUrl());
+        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,userOptional.get().getAvatarUrl());
         friendRequestRepository.save(friendRequest);
+        Notification notification = new Notification(
+                notiType.friendRequestAdd.type,
+                userId
+        );
+        messagingService.sendNotification("UNICAST", userId, friendId, notification);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess();
@@ -322,23 +361,39 @@ public class FriendServiceImpl implements FriendService {
         if (friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
+        friendRequestRepository.delete(friendRequest.get());
         User friend = friendOptional.get();
         if (addFriend(user, friend.getId()) || addFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
-        friendRequestRepository.delete(friendRequest.get());
+        Notification notification = new Notification(
+                notiType.friendRequestPass.type,
+                userId
+        );
+        messagingService.sendNotification("UNICAST", userId, friend.getId(), notification);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess();
     }
 
     @Override
-    public ResponseEntity<Object> rejectFriendRequest(String id) {
+    public ResponseEntity<Object> rejectFriendRequest(String userId,String id) {
         Optional<FriendRequest> friendRequest = friendRequestRepository.getById(id);
         if (friendRequest.isEmpty()) {
             throw new ConflictException("请求已被处理");
         }
         friendRequestRepository.delete(friendRequest.get());
+        Optional<User> friendOptional = userService
+                .getUserById(friendRequest.get().getSenderId());
+        if (friendOptional.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        User friend = friendOptional.get();
+        Notification notification = new Notification(
+                notiType.friendRequestReject.type,
+                userId
+        );
+        messagingService.sendNotification("UNICAST", userId, friend.getId(), notification);
         return ResponseEntityFactory
                 .getInstance()
                 .produceSuccess();

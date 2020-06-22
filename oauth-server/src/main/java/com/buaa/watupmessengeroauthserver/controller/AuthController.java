@@ -12,13 +12,16 @@ import com.buaa.watupmessengeroauthserver.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.token.AccessTokenProvider;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -58,6 +61,22 @@ public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
+    @Autowired
+    @Qualifier("consumerTokenServices")
+    private ConsumerTokenServices consumerTokenServices;
+
+    /**
+     * 退出登录,并清除redis中的token
+     **/
+    @GetMapping("/removeToken")
+    public Result removeToken(String access_token){
+        if(consumerTokenServices.revokeToken(access_token)) {
+            return ResultFactory.buildSuccessResult("注销成功");
+        }else {
+            return ResultFactory.buildFailResult("注销失败");
+        }
+    }
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Result register(HttpServletRequest req) {
@@ -67,7 +86,6 @@ public class AuthController {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
-        logger.info("email", email);
 
         Code dbCode = codeRepository.findByEmail(email);
         if(dbCode == null) {
@@ -91,14 +109,18 @@ public class AuthController {
     public Result login(HttpServletRequest req) {
         String username = req.getParameter("id");
         String password = req.getParameter("password");
+        logger.info("username", username);
+        logger.info("password", password);
 
         ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
+
         //设置请求认证授权的服务器的地址
         details.setAccessTokenUri("http://localhost:"+severPort+"/oauth/token");
         //下面都是认证信息：所拥有的权限，认证的客户端，具体的用户
         details.setScope(Arrays.asList("all"));
         details.setClientId("watup");
         details.setClientSecret("watup");
+        details.setGrantType("password");
         details.setUsername(username);
         details.setPassword(password);
 
@@ -109,6 +131,7 @@ public class AuthController {
             // 1、(内部流程简介：根据上述信息，将构造一个前文一中的请求头为 "Basic Base64(username:password)" 的http请求
             //2、之后将向认证授权服务器的 oauth/oauth_token 端点发送请求，试图获取AccessToken
             accessToken = provider.obtainAccessToken(details, new DefaultAccessTokenRequest());
+            return ResultFactory.buildSuccessResult(accessToken);
         } catch (NullPointerException e) {
             log.error("授权失败原因：{}", e.getMessage());
             return ResultFactory.buildFailResult("用户名或密码错误");
@@ -117,7 +140,7 @@ public class AuthController {
             return ResultFactory.buildFailResult("用户名或密码错误");
         }
 
-        return ResultFactory.buildSuccessResult(accessToken);
+
 
     }
 

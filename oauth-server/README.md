@@ -9,6 +9,7 @@
 - 用户登录
 - 获取(刷新)token
 - 验证token
+- 注销token
 
 ### 未完成
  - 注销token 
@@ -311,3 +312,37 @@ POST
   "error_description": "Token was not recognised"
 
 }
+
+## 注销token
+
+### 接口描述
+
+注销token
+
+### 请求方法
+
+GET
+
+### URI
+
+/oauth/removeToken
+
+### 参数
+
+| 字段         | 类型   | 描述    |
+| :----------- | ------ | ------- |
+| access_token | String | token值 |
+
+### 返回值
+
+#### 成功
+
+- code: 200
+- message: “成功注销token”
+- data: null
+
+#### 错误
+
+- code: 400
+- message: “注销token失败”
+- data: null

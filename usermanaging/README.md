@@ -8,6 +8,7 @@
 - 修改密码
 - 修改地区
 - 修改签名
+- 获取群头像
 
 # user-server接口说明
 
@@ -200,3 +201,35 @@ POST
 - code: 400
 - message: "图片上传失败”
 - data: null
+
+## 获取群头像
+
+### 请求方法
+
+POST
+
+### URI
+
+/getGroupAvatar
+
+### 参数
+
+| 字段     | 类型   | 描述     |
+| :------- | ------ | -------- |
+<<<<<<< HEAD
+| userIdList | String | 群成员列表（<=9个） |
+| groupId   | String | 群标识 |
+=======
+| groupId       | String | 群标识|
+| avatarUrls | List<String> | 用户头像[1, 9] |
+
+### 返回值
+
+#### 成功
+
+返回群头像的url
+
+
+#### 失败
+
+返回null
