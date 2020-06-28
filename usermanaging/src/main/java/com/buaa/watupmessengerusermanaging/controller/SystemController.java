@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class SystemController {
 
     @Autowired
@@ -78,10 +79,6 @@ public class SystemController {
         try {
             String filePath = ImgUtil.getCombinationOfHead(paths , uploadFolder, groupId );
             String avatarUrl = baseUrl + staticAccessPath + filePath;
-            MongoDatabase database = mongoTemplate.getDb();
-            MongoCollection<Document> collection = database.getCollection("groups");
-            collection.updateOne(Filters.eq("_id", new ObjectId(groupId)),
-                    new Document("$set", new Document("groupAvatar", avatarUrl)));
             return avatarUrl;
 
         }catch (IOException e) {

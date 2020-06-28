@@ -51,7 +51,7 @@ public class UserController {
         return ResultFactory.buildSuccessResult("hello");
     }
 
-    @RequestMapping(value = "/updateUsername", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/updateUsername", method = RequestMethod.POST)
     public Result updateUsername(@RequestParam("id") String id, @RequestParam("username") String username) {
         User user = userRepository.findUserById(id);
         if(user != null) {
@@ -63,45 +63,7 @@ public class UserController {
         return ResultFactory.buildFailResult("昵称修改失败");
     }
 
-//    @RequestMapping(value = "/user/getGroupAvatar", method = RequestMethod.POST)
-//    public Result getGroupAvatar(@RequestBody List<String> userId,
-//                                 @RequestParam String groupId,
-//                                 HttpServletRequest req) {
-//
-//        List<String>avatarUrls = new ArrayList<>();
-//
-//        for(String id : userId) {
-//            String avatarUrl =userRepository.findUserById(id).getAvatarUrl();
-//            avatarUrls.add(avatarUrl);
-//        }
-//
-//        String  baseUrl = req.getScheme() + "://" + req.getServerName() + ":" +
-//                req.getServerPort() + req.getContextPath(); //网页访问路径前缀
-//        List<String> paths = new ArrayList<>();
-//
-//        for(String s : avatarUrls) {
-//            int st = 0;
-//            int ed = s.length();
-//            if(s.indexOf("/") != -1) {
-//                st = s.lastIndexOf("/");
-//                ed = s.length();
-//            }
-//            paths.add(uploadFolder  + s.substring(st, ed));
-//        }
-//        try {
-//            String filePath = ImgUtil.getCombinationOfHead(paths , uploadFolder, groupId );
-//            String avatarUrl = baseUrl + staticAccessPath + filePath;
-//            MongoDatabase database = mongoTemplate.getDb();
-//            MongoCollection<Document> collection = database.getCollection("groups");
-//            collection.updateOne(Filters.eq("_id", new ObjectId(groupId)),
-//                    new Document("$set", new Document("groupAvatar", avatarUrl)));
-//            return ResultFactory.buildResult(ResultCode.SUCCESS, "群头像生成成功", avatarUrl);
-//
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//            return ResultFactory.buildFailResult("群头像获取失败");
-//        }
-//    }
+
 
     @RequestMapping(value = "/user/updateAvatar", method = RequestMethod.POST)
     public Result updateAvatar(@RequestParam(name = "file") MultipartFile file,
