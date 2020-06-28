@@ -12,7 +12,6 @@
 - 注销token
 
 ### 未完成
- - 注销token 
 
 # auth-server接口说明
 
@@ -24,7 +23,7 @@
 
 ### 请求方法
 
-POS
+POST
 
 ### URI
 
@@ -329,20 +328,29 @@ GET
 
 ### 参数
 
+<<<<<<< HEAD
 | 字段         | 类型   | 描述    |
 | :----------- | ------ | ------- |
 | access_token | String | token值 |
+=======
+| 字段 | 类型   | 描述         |
+| :--- | ------ | ------------ |
+| access_token | String | 令牌 |
+>>>>>>> 1e868f7c4d5f73695dd7c0968d04ddf76bad492c
 
 ### 返回值
 
 #### 成功
 
 - code: 200
-- message: “成功注销token”
+
+- message: “注销成功”
+
 - data: null
 
-#### 错误
+
+#### 验证码依然有效
 
 - code: 400
-- message: “注销token失败”
+- message: "注销失败"
 - data: null
