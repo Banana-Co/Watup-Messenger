@@ -1,9 +1,6 @@
 package com.buaa.whatupmessengermessaging.websocket;
 
-import com.buaa.whatupmessengermessaging.model.CheckTokenResult;
-import com.buaa.whatupmessengermessaging.model.Group;
-import com.buaa.whatupmessengermessaging.model.GroupMessage;
-import com.buaa.whatupmessengermessaging.model.Message;
+import com.buaa.whatupmessengermessaging.model.*;
 import com.buaa.whatupmessengermessaging.service.AuthServer;
 import com.buaa.whatupmessengermessaging.service.FriendService;
 import com.buaa.whatupmessengermessaging.service.GroupService;
@@ -52,11 +49,21 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             } else if (type.asText().equalsIgnoreCase("multicast")) {
                 GroupMessage groupMessage = mapper.readValue(msg.text(), GroupMessage.class);
                 handleMulticast(groupMessage, ctx);
+            } else if (type.asText().equalsIgnoreCase("signal")) {
+                Signal signal = mapper.readValue(msg.text(), Signal.class);
+                System.out.println(signal);
+                handleSignal(signal, ctx);
+            } else if (type.asText().equalsIgnoreCase("connect")) {
+                Connect connect = mapper.readValue(msg.text(), Connect.class);
+                System.out.println(connect);
+                handleConnect(connect, ctx);
             }
 
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
+
 
     private void handleUnicast(Message message, ChannelHandlerContext ctx) throws JsonProcessingException {
         message.setTimestamp(LocalDateTime.now());
@@ -120,8 +127,49 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
     }
 
+    private void handleSignal(Signal signal, ChannelHandlerContext ctx) {
+        try {
+            String senderId = MessagingSession.getId(ctx);
+            signal.setSenderId(senderId);
+            String receiverId = signal.getReceiverId();
+            System.out.println(String.format("%s: [SIGNAL] from: %s, to: %s", LocalDateTime.now().toString(), senderId, receiverId));
+            System.out.println(signal.getSignal());
+
+            Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
+
+            if (outCtx.isPresent() && outCtx.get().channel().isActive()) {
+                outCtx.get().writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(signal)));
+                System.out.println(receiverId + " online, written to " + outCtx.get());
+            } else {
+                System.out.println(receiverId + " not online, drop");
+            }
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void handleConnect(Connect connect, ChannelHandlerContext ctx) {
+        try {
+            String senderId = MessagingSession.getId(ctx);
+            connect.setSenderId(senderId);
+            String receiverId = connect.getReceiverId();
+            System.out.println(String.format("%s: [CONNECT] from: %s, to: %s", LocalDateTime.now().toString(), senderId, receiverId));
+
+            Optional<ChannelHandlerContext> outCtx = MessagingSession.getChannelHandlerContext(receiverId);
+
+            if (outCtx.isPresent() && outCtx.get().channel().isActive()) {
+                outCtx.get().writeAndFlush(new TextWebSocketFrame(mapper.writeValueAsString(connect)));
+                System.out.println(receiverId + " online, written to " + outCtx.get());
+            } else {
+                System.out.println(receiverId + " not online, drop");
+            }
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         System.out.println(evt);
        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
            try {
@@ -140,6 +188,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
                CheckTokenResult result = authServer.checkToken(token);
 
                if (result != null && result.getId() != null) {
+                   // 不需要时动态移除 handler
                    ctx.pipeline().remove(HTTPRequestHandler.class);
                    MessagingSession.addSession(result.getId(), ctx);
                    System.out.println(String.format("%s: [ESTABLISHED] connection established with %s(%s)", LocalDateTime.now().toString(), result.getId(), ctx.toString()));
@@ -153,7 +202,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
            }
 
        } else {
-           super.userEventTriggered(ctx, evt);
+           ctx.fireUserEventTriggered(evt);
        }
     }
 

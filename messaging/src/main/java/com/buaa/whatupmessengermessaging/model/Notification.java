@@ -5,13 +5,10 @@ public class Notification {
     String notificationType;
     Object content;
 
-    public Notification(String notificationType, String content) {
-        this.notificationType = notificationType;
-        this.content = content;
+    public Notification() {
     }
 
-    public Notification(String type, String notificationType, String content) {
-        this.type = type;
+    public Notification(String notificationType, String content) {
         this.notificationType = notificationType;
         this.content = content;
     }

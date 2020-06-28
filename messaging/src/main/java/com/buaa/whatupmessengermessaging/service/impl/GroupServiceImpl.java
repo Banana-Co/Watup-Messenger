@@ -7,6 +7,7 @@ import com.buaa.whatupmessengermessaging.model.GroupRequest;
 import com.buaa.whatupmessengermessaging.model.Notification;
 import com.buaa.whatupmessengermessaging.model.UserGroup;
 import com.buaa.whatupmessengermessaging.service.GroupService;
+import com.buaa.whatupmessengermessaging.service.UserService;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -29,10 +30,13 @@ public class GroupServiceImpl implements GroupService {
     MongoTemplate mongoTemplate;
     @Autowired
     MessageController messageController;
+    @Autowired
+    UserService userService;
 
     @Override
     public String addGroup(String managerId, String name) {
         Group group = new Group(name, managerId, new ArrayList<>());
+
         String groupId =  mongoTemplate.insert(group, "groups").getId();
         addToProfile(managerId, groupId);
         addToGroup(managerId, groupId);
@@ -147,8 +151,8 @@ public class GroupServiceImpl implements GroupService {
             addToGroup(userId, groupRequest.getGroupId());
             _removeRequest(groupRequest.getId());
 
-            Notification notification = new Notification("GROUP_REQUEST_ACCEPTED", userId);
-            messageController.sendNotification("UNICAST", userId, groupRequest.getInvitedBy(), notification);
+            Notification notification = new Notification("GROUP_REQUEST_ACCEPTED", groupRequest.getGroupId());
+            messageController.sendNotification("MULTICAST", userId, groupRequest.getGroupId(), notification);
         }
     }
 
@@ -182,7 +186,7 @@ public class GroupServiceImpl implements GroupService {
             removeFromProfile(userId, groupId);
             removeFromGroup(userId, groupId);
             Notification notification = new Notification("GROUP_REMOVED", groupId);
-            messageController.sendNotification("UNICAST", null, userId, notification);
+            messageController.sendNotification("MULTICAST", userId, groupId, notification);
         }
     }
 
@@ -219,18 +223,47 @@ public class GroupServiceImpl implements GroupService {
         Criteria criteria = Criteria.where("_id").is(groupId);
         Update update = new Update().addToSet("usersId", userId);
         mongoTemplate.updateFirst(Query.query(criteria), update, "groups");
+        try {
+            Group group = mongoTemplate.findById(groupId, Group.class, "groups");
+            List<String> nineUsers;
+            if (group.getUsersId().size() > 9)
+                nineUsers = group.getUsersId().subList(0, 9);
+            else
+                nineUsers = group.getUsersId();
+            String avatarUrl = userService.getGroupAvatar(nineUsers, groupId);
+            System.out.println(avatarUrl);
+            update = new Update().set("avatarUrl", avatarUrl);
+            mongoTemplate.updateFirst(Query.query(criteria), update, "groups");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     private void removeFromProfile(String userId, String groupId) {
         Criteria criteria = Criteria.where("_id").is(userId);
         Update update = new Update().pull("groupsId", groupId);
         mongoTemplate.updateFirst(Query.query(criteria), update, "usergroup");
+
     }
 
     private void removeFromGroup(String userId, String groupId) {
         Criteria criteria = Criteria.where("_id").is(groupId);
         Update update = new Update().pull("usersId", userId);
         mongoTemplate.updateFirst(Query.query(criteria), update, "groups");
+        try {
+            Group group = mongoTemplate.findById(groupId, Group.class, "groups");
+            List<String> nineUsers;
+            if (group.getUsersId().size() > 9)
+                nineUsers = group.getUsersId().subList(0, 9);
+            else
+                nineUsers = group.getUsersId();
+            String avatarUrl = userService.getGroupAvatar(nineUsers, groupId);
+            update = new Update().set("avatarUrl", avatarUrl);
+            mongoTemplate.updateFirst(Query.query(criteria), update, "groups");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void _removeRequest(String requestId) {

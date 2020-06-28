@@ -10,6 +10,7 @@ public class Group {
     private String name;
     private String managerId;
     private List<String> usersId;
+    private String avatarUrl;
 
     public Group(String name, String managerId, List<String> usersId) {
         this.name = name;
@@ -47,6 +48,14 @@ public class Group {
 
     public void setUsersId(List<String> usersId) {
         this.usersId = usersId;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     @Override
