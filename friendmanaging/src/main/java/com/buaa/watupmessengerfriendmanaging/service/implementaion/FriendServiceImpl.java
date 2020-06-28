@@ -333,7 +333,7 @@ public class FriendServiceImpl implements FriendService {
         if (friend.getBlocks() != null && friend.getBlocks().contains(userId)) {
             throw new ForbiddenException();
         }
-        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,friend.getAvatarUrl());
+        FriendRequest friendRequest = FriendRequestFactory.produce(userId, friendId, remark,userOptional.get().getAvatarUrl());
         friendRequestRepository.save(friendRequest);
         Notification notification = new Notification(
                 notiType.friendRequestAdd.type,
@@ -361,11 +361,11 @@ public class FriendServiceImpl implements FriendService {
         if (friendOptional.isEmpty()) {
             throw new UserNotFoundException();
         }
+        friendRequestRepository.delete(friendRequest.get());
         User friend = friendOptional.get();
         if (addFriend(user, friend.getId()) || addFriend(friend, userId)) {
             throw new ConflictException("请求已被处理");
         }
-        friendRequestRepository.delete(friendRequest.get());
         Notification notification = new Notification(
                 notiType.friendRequestPass.type,
                 userId
