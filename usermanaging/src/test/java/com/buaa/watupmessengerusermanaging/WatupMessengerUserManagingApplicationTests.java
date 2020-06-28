@@ -1,9 +1,11 @@
 package com.buaa.watupmessengerusermanaging;
 
+import com.mongodb.client.model.Filters;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
@@ -20,23 +22,24 @@ class WatupMessengerUserManagingApplicationTests {
     private String uploadFolder;
     private String staticAccessPath = "/static/upload/img/";
 
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+
     @Test
     void contextLoads() {
-        Integer groupId = 0;
-        for(int i = 1; i <= 10; i++) {
-            List<String> list = new ArrayList<>();
-            for(int j = 0; j < i ; j++) {
-
-                list.add(uploadFolder + "2.png");
-            }
-
-            try {
-
-                String path = ImgUtil.getCombinationOfHead(list, uploadFolder, groupId.toString());
-                groupId++;
-            }catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        String groupId = "5ef04b64c6849a3aa9ee3567";
+//        List<String> list = new ArrayList<>();
+//        list.add("wenzhuolin");
+//        list.add("CastJo");
+//        list.add("19990425");
+//        list.add("leon");
+//        list.add("114514");
+//
+//        try {
+//            String path = ImgUtil.getCombinationOfHead(list, uploadFolder, groupId.toString());
+//        }catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

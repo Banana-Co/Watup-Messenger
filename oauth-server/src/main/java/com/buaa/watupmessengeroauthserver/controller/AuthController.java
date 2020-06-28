@@ -100,7 +100,7 @@ public class AuthController {
         }
         codeRepository.delete(dbCode);
         User user = new User(userId, username, new BCryptPasswordEncoder().encode(password),  email);
-        user.setAvatarUrl("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
+        user.setAvatarUrl("http://106.13.134.241:8087/static/upload/img/09c2b7d5-1ea7-46f5-b199-e5fae66e48bf.png");
         mongoTemplate.save(user, "user");
         return ResultFactory.buildSuccessResult("注册成功");
     }
